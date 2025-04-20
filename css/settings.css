@@ -9,8 +9,8 @@
     width: 350px;
     /*  height: calc(100vh - 35px); /* Stessa altezza della sidebar */
     margin-bottom: 15px; /* Stesso margin-bottom della sidebar */
-    background-color: var(--window-color);
-    opacity: var(--window-opacity);
+    background-color: rgba(255, 255, 255, 0.95);
+    opacity: 0.95;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     z-index: 100; /* Appena sotto la sidebar che ha z-index: 10 */
     transition: left 0.3s ease-in-out, transform 0.3s ease-in-out;

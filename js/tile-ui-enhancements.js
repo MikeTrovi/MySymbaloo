@@ -9,52 +9,34 @@
 function adjustTileWidth(change) {
     const widthInput = document.getElementById('tile-width');
     const visualWidth = document.getElementById('visual-width');
-    
     // Ottieni il valore corrente e aggiungi il cambiamento
     let currentWidth = parseInt(widthInput.value);
     let newWidth = currentWidth + change;
-    
     // Limita i valori tra min e max
     newWidth = Math.max(parseInt(widthInput.min), Math.min(parseInt(widthInput.max), newWidth));
-    
-    // Aggiorna il valore dell'input originale
     widthInput.value = newWidth;
-    
-    // Aggiorna la visualizzazione
     visualWidth.textContent = newWidth;
-    
-    // Aggiorna l'anteprima visiva
     updateTilePreview();
-    
-    // Simula l'evento change sull'input originale
     const event = new Event('change');
     widthInput.dispatchEvent(event);
+    updateDecreaseButtonsState();
 }
+
 
 function adjustTileHeight(change) {
     const heightInput = document.getElementById('tile-height');
     const visualHeight = document.getElementById('visual-height');
-    
-    // Ottieni il valore corrente e aggiungi il cambiamento
     let currentHeight = parseInt(heightInput.value);
     let newHeight = currentHeight + change;
-    
-    // Limita i valori tra min e max
     newHeight = Math.max(parseInt(heightInput.min), Math.min(parseInt(heightInput.max), newHeight));
-    
-    // Aggiorna il valore dell'input originale
     heightInput.value = newHeight;
-    
-    // Aggiorna la visualizzazione
     visualHeight.textContent = newHeight;
-    
-    // Aggiorna l'anteprima visiva
     updateTilePreview();
-    
-    // Simula l'evento change sull'input originale
     const event = new Event('change');
     heightInput.dispatchEvent(event);
+    updateDecreaseButtonsState();
 }
+
 
 // Aggiorna l'anteprima visiva del tile
 function updateTilePreview() {
@@ -77,6 +59,19 @@ function updateTilePreview() {
     if (iconContainer) {
         iconContainer.style.position = 'relative';
         iconContainer.style.backgroundColor = 'transparent';
+    }
+}
+
+function updateDecreaseButtonsState() {
+    const widthInput = document.getElementById('tile-width');
+    const heightInput = document.getElementById('tile-height');
+    const widthDecreaseBtn = document.getElementById('width-decrease');
+    const heightDecreaseBtn = document.getElementById('height-decrease');
+    if (widthDecreaseBtn && widthInput) {
+        widthDecreaseBtn.disabled = parseInt(widthInput.value) <= parseInt(widthInput.min);
+    }
+    if (heightDecreaseBtn && heightInput) {
+        heightDecreaseBtn.disabled = parseInt(heightInput.value) <= parseInt(heightInput.min);
     }
 }
 
@@ -116,4 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (heightInput && document.getElementById('visual-height')) {
         document.getElementById('visual-height').textContent = heightInput.value;
     }
+    // Aggiorna lo stato dei pulsanti all'avvio
+    updateDecreaseButtonsState();
 });

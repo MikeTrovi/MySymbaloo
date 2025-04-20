@@ -141,88 +141,93 @@
                 <button id="close-edit" class="close-button"><i class="fas fa-times"></i></button>
             </div>
             <div class="edit-content">
-            <div class="edit-item">
-                <label for="tile-type">Tipo di tile:</label>
-                <select id="tile-type">
-                    <option value="single">Tile singolo</option>
-                    <option value="group">Gruppo di tile</option>
-                </select>
-            </div>
-            
-            <div class="edit-item">
-                <label for="tile-icon-type">Tipo di icona:</label>
-                <select id="tile-icon-type">
-                    <option value="predefined">Icona predefinita</option>
-                    <option value="online">Icona online</option>
-                    <option value="upload">Carica dal disco</option>
-                </select>
-            </div>
-            
-            <div class="edit-item icon-selection">
-                <div id="predefined-icons" class="icon-grid">
-                    <!-- Icone predefinite verranno caricate qui -->
+                <div class="edit-item">
+                    <label for="tile-type">Tipo di tile:</label>
+                    <select id="tile-type">
+                        <option value="single">Tile singolo</option>
+                        <option value="group">Gruppo di tile</option>
+                    </select>
                 </div>
-                <div id="upload-icon-area" style="display: none;">
-                    <input type="file" id="icon-file" accept="image/*">
+                <div class="edit-item">
+                    <label for="tile-icon-type">Tipo di icona:</label>
+                    <select id="tile-icon-type">
+                        <option value="predefined">Icona predefinita</option>
+                        <option value="online">Icona online</option>
+                        <option value="upload">Carica dal disco</option>
+                    </select>
                 </div>
-                <div id="online-icon-area" style="display: none;">
-                    <input type="text" id="icon-url" placeholder="URL dell'icona">
-                </div>
-                <div class="icon-preview">
-                    <div id="icon-preview-container"></div>
-                </div>
-            </div>
-            
-            <div class="edit-item">
-                <label for="tile-title">Titolo:</label>
-                <input type="text" id="tile-title" placeholder="Titolo del tile">
-            </div>
-            
-            <div class="edit-item" id="url-container">
-                <label for="tile-url">URL:</label>
-                <input type="text" id="tile-url" placeholder="https://...">
-            </div>
-            
-            <div class="edit-item">
-                <label for="tile-display">Visualizza:</label>
-                <select id="tile-display">
-                    <option value="title">Solo titolo</option>
-                    <option value="url">Solo URL</option>
-                    <option value="both">Titolo e URL</option>
-                    <option value="none">Nessuno</option>
-                </select>
-            </div>
-            
-            <div class="edit-item">
-                <label for="tile-color">Colore del tile:</label>
-                <input type="color" id="tile-color" value="#3498db">
-            </div>
-            
-            <div class="edit-item preview-section" style="margin-bottom: 15px;">
-                <div class="preview-label">Preview</div>
-                <div class="tile-preview">
-                    <div id="tile-preview-display" class="preview-display">
-                        <div id="icon-preview-container" style="width: 45px; height: 45px;"></div>
+                <div class="edit-item icon-selection">
+                    <div id="predefined-icons" class="icon-grid"></div>
+                    <div id="upload-icon-area" style="display: none;">
+                        <input type="file" id="icon-file" accept="image/*">
+                    </div>
+                    <div id="online-icon-area" style="display: none;">
+                        <input type="text" id="icon-url" placeholder="URL dell'icona">
+                    </div>
+                    <div class="icon-preview">
+                        <div id="icon-preview-container"></div>
                     </div>
                 </div>
-            </div>
-
-            <div class="edit-item" id="tile-size-container">
-                <div class="section-title">Size</div>
-                <div class="size-selector">
-                    <div class="resize-controls">
-                        <div class="resize-display" id="size-display-visual">
-                            <span id="visual-width">1</span>x<span id="visual-height">1</span>
-                        </div>
-                        <div class="resize-buttons">
-                            <button type="button" id="width-decrease" class="resize-button" onclick="adjustTileWidth(-1);"><i class="fas fa-chevron-left"></i></button>
-                            <button type="button" id="width-increase" class="resize-button" onclick="adjustTileWidth(1);"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                        <div class="resize-buttons">
-                            <button type="button" id="height-decrease" class="resize-button" onclick="adjustTileHeight(-1);"><i class="fas fa-chevron-up"></i></button>
-                            <button type="button" id="height-increase" class="resize-button" onclick="adjustTileHeight(1);"><i class="fas fa-chevron-down"></i></button>
+                <div class="edit-item">
+                    <label for="tile-title">Titolo:</label>
+                    <input type="text" id="tile-title" placeholder="Titolo del tile">
+                </div>
+                <div class="edit-item" id="url-container">
+                    <label for="tile-url">URL:</label>
+                    <input type="text" id="tile-url" placeholder="https://...">
+                </div>
+                <div class="edit-item">
+                    <label for="tile-display">Visualizza:</label>
+                    <select id="tile-display">
+                        <option value="title">Solo titolo</option>
+                        <option value="url">Solo URL</option>
+                        <option value="both">Titolo e URL</option>
+                        <option value="none">Nessuno</option>
+                    </select>
+                </div>
+                <div class="edit-item">
+                    <label for="tile-color">Colore del tile:</label>
+                    <input type="color" id="tile-color" value="#3498db">
+                </div>
+                <div class="edit-item preview-section" style="margin-bottom: 15px;">
+                    <div class="preview-label">Preview</div>
+                    <div class="tile-preview">
+                        <div id="tile-preview-display" class="preview-display">
+                            <div id="icon-preview-container" style="width: 45px; height: 45px;"></div>
                         </div>
                     </div>
+                </div>
+                <div class="edit-item" id="tile-size-container">
+                    <div class="section-title">Dimensione</div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 0;">
+  <!-- Riga principale: quadrato + pulsanti destra/sinistra -->
+  <div style="display: flex; flex-direction: row; align-items: center; width: 100px; height: 80px;">
+    <!-- Quadrato grigio -->
+    <div style="width: 80px; height: 80px; position: relative; display: flex; align-items: center; justify-content: center;">
+      <div id="tile-dimension-square" style="width: 72px; height: 72px; background: #dedede; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: absolute; left: 4px; top: 4px;">
+        <span id="visual-dimension">1x1</span>
+      </div>
+    </div>
+    <!-- Pulsanti destra/sinistra -->
+    <div style="width: 20px; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; margin-left: 4px;">
+      <button type="button" id="width-decrease" class="dim-circle-btn" style="width:22px;height:22px;" onclick="adjustTileWidth(-1);" title="Riduci larghezza">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button type="button" id="width-increase" class="dim-circle-btn" style="width:22px;height:22px;" onclick="adjustTileWidth(1);" title="Aumenta larghezza">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+  <!-- Riga sotto: pulsanti su/giù -->
+  <div style="width: 80px; height: 20px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px; margin-top: 4px;">
+    <button type="button" id="height-increase" class="dim-circle-btn" style="width:22px;height:22px;" onclick="adjustTileHeight(1);" title="Aumenta altezza">
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <button type="button" id="height-decrease" class="dim-circle-btn" style="width:22px;height:22px;" onclick="adjustTileHeight(-1);" title="Riduci altezza">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+  </div>
+</div>
                     <!-- Manteniamo gli input originali ma li nascondiamo visivamente -->
                     <div style="display: none;">
                         <label for="tile-width">Larghezza:</label>
@@ -233,30 +238,27 @@
                         <input type="number" id="tile-height" min="1" max="6" value="1">
                     </div>
                 </div>
-            </div>
-            
-            <div class="edit-item" id="group-size-container" style="display: none;">
-                <label>Dimensione del gruppo:</label>
-                <div class="size-selector">
-                    <div>
-                        <label for="group-columns">Colonne:</label>
-                        <input type="number" id="group-columns" min="2" max="6" value="2">
-                    </div>
-                    <div>
-                        <label for="group-rows">Righe:</label>
-                        <input type="number" id="group-rows" min="2" max="6" value="2">
+                <div class="edit-item" id="group-size-container" style="display: none;">
+                    <label>Dimensione del gruppo:</label>
+                    <div class="size-selector">
+                        <div>
+                            <label for="group-columns">Colonne:</label>
+                            <input type="number" id="group-columns" min="2" max="6" value="2">
+                        </div>
+                        <div>
+                            <label for="group-rows">Righe:</label>
+                            <input type="number" id="group-rows" min="2" max="6" value="2">
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="edit-item">
-                <label for="tile-locked">Blocca posizione:</label>
-                <input type="checkbox" id="tile-locked">
-            </div>
-            
-            <div class="edit-actions">
-                <button id="save-tile" class="primary-button">Salva</button>
-                <button id="cancel-edit" class="secondary-button">Annulla</button>
+                <div class="edit-item">
+                    <label for="tile-locked">Blocca posizione:</label>
+                    <input type="checkbox" id="tile-locked">
+                </div>
+                <div class="edit-actions">
+                    <button id="save-tile" class="primary-button">Salva</button>
+                    <button id="cancel-edit" class="secondary-button">Annulla</button>
+                </div>
             </div>
         </div>
     </div>
