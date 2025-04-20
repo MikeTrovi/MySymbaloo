@@ -1,0 +1,383 @@
+/* 
+ * tiles.css - Stile per i tile e la griglia
+ * 
+ * Questo file contiene tutti gli stili relativi ai tiles e alla griglia principale 
+ * dell'applicazione My Symbaloo. Include stili per:
+ * - Container principale della griglia
+ * - Tiles di base, vuoti, singoli e di gruppo
+ * - Icone e contenuti dei tiles
+ * - Azioni sui tiles (pulsanti ed effetti)
+ * - Dimensionamento dei tiles
+ * - Responsive design
+ */
+
+/* ==========================================
+   Container per la griglia di tiles 
+   ========================================== */
+.main-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: calc(100% - 60px);
+    overflow: hidden;
+}
+
+.tiles-container {
+    position: relative;
+    width: calc(100% - 125px); /* Stessa formula dell'header: 100% meno (sidebar 65px + spazio 30px + margine extra) */
+    max-width: calc(var(--grid-columns) * var(--tile-size) + 600px);
+    height: fit-content;
+    max-height: calc(100% - 35px);
+    padding: 15px 40px 15px 40px;
+    margin: 0 0 25px 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: rgba(245, 245, 245, 0.6);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 8), var(--tile-size));
+    grid-auto-rows: var(--tile-size);
+    grid-gap: 4px;
+    justify-content: center;
+    align-content: start;
+    transition: all 0.3s ease;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    z-index: 1; /* Assicura che i tiles siano visibili */
+    
+    /* Stile scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.tiles-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.tiles-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.tiles-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ==========================================
+   Stili base per i tiles
+   ========================================== */
+.tile {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: var(--tile-color, #ffffff);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    border: none;
+    padding-bottom: 30px; /* Spazio per la fascia di informazioni */
+}
+
+.tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.tile:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ==========================================
+   Stili specifici per tipi di tiles
+   ========================================== */
+/* Stile per i tile vuoti */
+.tile.empty {
+    background-color: var(--empty-tile-color);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    opacity: var(--empty-tile-opacity, 0.4);
+    box-shadow: none;
+}
+
+.tile.empty:hover {
+    opacity: 1;
+    border-color: var(--primary-color);
+    border-width: 2px;
+    transform: none;
+}
+
+/* Stile per i tile singoli */
+.tile.single {
+    user-select: none;
+}
+
+/* Stile per i tile di gruppo */
+.tile.group {
+    position: relative;
+    background-image: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 25%, 
+        transparent 25%, 
+        transparent 50%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        rgba(255, 255, 255, 0.1) 75%, 
+        transparent 75%, 
+        transparent);
+    background-size: 10px 10px;
+}
+
+/* Stile per i tile bloccati */
+.tile.locked {
+    cursor: default;
+}
+
+.tile.locked:hover {
+    transform: none;
+}
+
+/* Stile per i tile durante il drag */
+.tile.dragging {
+    opacity: 0.7;
+    z-index: 10;
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================
+   Contenuti dei tiles
+   ========================================== */
+/* Contenitore per l'icona del tile */
+.tile-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+    margin-bottom: 0; /* Rimuoviamo il margine inferiore per posizionare meglio l'icona */
+}
+
+.tile:hover .tile-icon {
+    transform: scale(1.1);
+}
+
+.tile-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Contenitore per il titolo e l'URL */
+.tile-info-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 6px 8px 4px 8px;
+    font-size: 0.95em;
+    color: #222;
+    background: rgba(220,220,220,0.5); /* grigio chiaro e trasparente al 50% */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    pointer-events: none;
+}
+
+/* Stile per il titolo del tile */
+.tile-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 90%;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Stile per l'URL del tile */
+.tile-url {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 90%;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================
+   Azioni sui tiles (icone nei angoli)
+   ========================================== */
+.tile-action {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    color: white;
+    opacity: 0;
+    transition: all 0.2s ease;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.tile-action:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.tile:hover .tile-action {
+    opacity: 1;
+}
+
+/* Posizionamento delle icone nei diversi angoli */
+.delete-action {
+    top: 5px;
+    right: 5px;
+}
+
+.delete-action:hover {
+    color: #e74c3c;
+}
+
+.edit-action {
+    bottom: 5px;
+    right: 5px;
+}
+
+.lock-action {
+    bottom: 5px;
+    right: 5px;
+    color: #f1c40f;
+}
+
+.edit-action:hover {
+    color: #f39c12;
+}
+
+.open-action {
+    top: 5px;
+    left: 5px;
+}
+
+.open-action:hover {
+    color: #2ecc71;
+}
+
+.folder-indicator {
+    top: 5px;
+    left: 5px;
+    opacity: 0.9;
+    background-color: transparent;
+}
+
+/* ==========================================
+   Dimensionamento dei tiles
+   ========================================== */
+/* Stile per tile di dimensioni diverse - larghezza */
+.tile[data-width="2"] {
+    grid-column: span 2;
+}
+
+.tile[data-width="3"] {
+    grid-column: span 3;
+}
+
+.tile[data-width="4"] {
+    grid-column: span 4;
+}
+
+.tile[data-width="5"] {
+    grid-column: span 5;
+}
+
+.tile[data-width="6"] {
+    grid-column: span 6;
+}
+
+/* Stile per tile di dimensioni diverse - altezza */
+.tile[data-height="2"] {
+    grid-row: span 2;
+}
+
+.tile[data-height="3"] {
+    grid-row: span 3;
+}
+
+.tile[data-height="4"] {
+    grid-row: span 4;
+}
+
+.tile[data-height="5"] {
+    grid-row: span 5;
+}
+
+.tile[data-height="6"] {
+    grid-row: span 6;
+}
+
+/* ==========================================
+   Spazio di rilascio per drag and drop
+   ========================================== */
+.tile-drop-zone {
+    background-color: rgba(46, 204, 113, 0.2);
+    border: 2px dashed #2ecc71;
+}
+
+.tile-drop-zone.invalid {
+    background-color: rgba(231, 76, 60, 0.2);
+    border: 2px dashed #e74c3c;
+}
+
+/* ==========================================
+   Responsive design
+   ========================================== */
+@media (max-width: 1200px) {
+    .tiles-container {
+        /* Mantiene le dimensioni fisse dei tile */
+        grid-template-columns: repeat(var(--grid-columns, 8), var(--tile-size));
+        grid-auto-rows: var(--tile-size);
+        padding: 10px;
+        overflow-x: auto; /* Permette lo scroll orizzontale se necessario */
+    }
+}
+
+@media (max-width: 768px) {
+    .tiles-container {
+        /* Mantiene le dimensioni fisse dei tile */
+        grid-template-columns: repeat(var(--grid-columns, 8), var(--tile-size));
+        grid-auto-rows: var(--tile-size);
+        padding: 10px;
+        grid-gap: 5px;
+        overflow-x: auto; /* Permette lo scroll orizzontale se necessario */
+    }
+}
+
+@media (max-width: 480px) {
+    .tiles-container {
+        /* Mantiene le dimensioni fisse dei tile */
+        grid-template-columns: repeat(var(--grid-columns, 8), var(--tile-size));
+        grid-auto-rows: var(--tile-size);
+        padding: 5px;
+        overflow-x: auto; /* Permette lo scroll orizzontale se necessario */
+    }
+}
