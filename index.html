@@ -76,62 +76,103 @@
 
     <!-- Pannello impostazioni (nascosto di default) -->
     <div class="settings-panel" id="settings-panel">
-        <div class="opaque-content">
-            <div class="settings-header">
-                <h2>Impostazioni</h2>
-                <button id="close-settings" class="close-button"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="settings-content">
-            <div class="setting-item">
-                <label for="app-name">Nome del programma:</label>
-                <input type="text" id="app-name" value="My Symbaloo">
-            </div>
-            
-            <div class="setting-item">
-                <label for="window-color">Colore delle finestre:</label>
-                <input type="color" id="window-color" value="#ffffff">
-            </div>
-            
-            <div class="setting-item">
-                <label for="empty-tile-color">Colore dei tile non assegnati:</label>
-                <input type="color" id="empty-tile-color" value="#e0e0e0">
-            </div>
-            
-            <div class="setting-item">
-                <label for="enable-background">Abilita sfondo per le pagine:</label>
-                <input type="checkbox" id="enable-background">
-            </div>
-            
-            <div class="setting-item" id="background-selector-container" style="display: none;">
-                <button id="select-background" class="secondary-button">Seleziona immagine di sfondo</button>
-            </div>
-            
-            <div class="setting-item">
-                <label for="show-empty-tiles">Mostra tile vuoti:</label>
-                <input type="checkbox" id="show-empty-tiles" checked>
-            </div>
-            
-            <div class="setting-item">
-                <label for="transparency-slider">Trasparenza delle finestre:</label>
-                <input type="range" id="transparency-slider" min="0" max="100" value="0">
-            </div>
-            
-            <div class="setting-item">
-                <label for="grid-columns">Numero di colonne:</label>
-                <input type="number" id="grid-columns" min="4" max="12" value="8">
-            </div>
-            
-            <div class="setting-item">
-                <label for="grid-rows">Numero di righe:</label>
-                <input type="number" id="grid-rows" min="3" max="10" value="6">
-            </div>
-            
-            <div class="setting-item">
-                <button id="save-settings" class="primary-button">Salva impostazioni</button>
-            </div>
-            </div>
+  <div class="settings-sidebar">
+    <div class="settings-menu">
+      <button class="settings-menu-item active" data-settings-page="add-tiles">
+        <i class="fas fa-plus"></i>
+        <div>
+          <div class="menu-title">Add Tiles</div>
+          <div class="menu-desc">Add Tiles from URL or our collection</div>
         </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="customize-tiles">
+        <i class="fas fa-th-large"></i>
+        <div>
+          <div class="menu-title">Customize Tiles</div>
+          <div class="menu-desc">Set Tile color, size and icon</div>
+        </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="markers">
+        <i class="fas fa-border-all"></i>
+        <div>
+          <div class="menu-title">Markers</div>
+          <div class="menu-desc">Mark Tiles with label & color</div>
+        </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="groups">
+        <i class="fas fa-object-group"></i>
+        <div>
+          <div class="menu-title">Groups</div>
+          <div class="menu-desc">Group Tiles together in one Tile</div>
+        </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="learning-paths">
+        <i class="fas fa-route"></i>
+        <div>
+          <div class="menu-title">Learning Paths <span class="badge-new">NEW!</span></div>
+          <div class="menu-desc">Create a Learning Path and add Activities</div>
+        </div>
+      </button>
+      <div class="settings-menu-section">Webmix Customization</div>
+      <button class="settings-menu-item" data-settings-page="general">
+        <i class="fas fa-font"></i>
+        <div>
+          <div class="menu-title">General</div>
+          <div class="menu-desc">Set Webmix name, color and icon</div>
+        </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="background">
+        <i class="fas fa-image"></i>
+        <div>
+          <div class="menu-title">Background</div>
+          <div class="menu-desc">Set background for this Webmix</div>
+        </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="size">
+        <i class="fas fa-expand-arrows-alt"></i>
+        <div>
+          <div class="menu-title">Size</div>
+          <div class="menu-desc">Resize the Webmix to fit your Tiles</div>
+        </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="style">
+        <i class="fas fa-th"></i>
+        <div>
+          <div class="menu-title">Style</div>
+          <div class="menu-desc">Set shape of Tiles on Webmix</div>
+        </div>
+      </button>
+      <div class="settings-menu-section">Misc Options</div>
+      <button class="settings-menu-item" data-settings-page="collaborate">
+        <i class="fas fa-users"></i>
+        <div>
+          <div class="menu-title">Collaborate</div>
+          <div class="menu-desc">Work together on this Webmix</div>
+        </div>
+      </button>
+      <button class="settings-menu-item" data-settings-page="remove">
+        <i class="fas fa-trash"></i>
+        <div>
+          <div class="menu-title">Remove</div>
+          <div class="menu-desc">Remove this Webmix</div>
+        </div>
+      </button>
     </div>
+  </div>
+  <div class="settings-main" id="settings-main-content">
+    <!-- Qui verrà mostrata la pagina selezionata -->
+    <div class="settings-page" data-settings-page="add-tiles">Pagina Add Tiles (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="customize-tiles" style="display:none">Pagina Customize Tiles (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="markers" style="display:none">Pagina Markers (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="groups" style="display:none">Pagina Groups (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="learning-paths" style="display:none">Pagina Learning Paths (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="general" style="display:none">Pagina General (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="background" style="display:none">Pagina Background (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="size" style="display:none">Pagina Size (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="style" style="display:none">Pagina Style (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="collaborate" style="display:none">Pagina Collaborate (personalizzabile)</div>
+    <div class="settings-page" data-settings-page="remove" style="display:none">Pagina Remove (personalizzabile)</div>
+  </div>
 
     <!-- Pannello di modifica tile (nascosto di default) -->
     <div class="tile-edit-panel" id="tile-edit-panel">
@@ -308,4 +349,16 @@
 </div>
 <script src="js/about-modal.js"></script>
 </body>
+  <!-- Hidden settings inputs for AppConfig compatibility -->
+  <div id="hidden-settings-fields" style="display:none;">
+    <input id="app-name" type="text" value="My Symbaloo">
+    <input id="window-color" type="color" value="#a52a2a"> <!-- brown -->
+    <input id="empty-tile-color" type="color" value="#800080"> <!-- purple -->
+    <input id="enable-background" type="checkbox">
+    <input id="show-empty-tiles" type="checkbox" checked>
+    <input id="transparency-slider" type="range" min="0" max="100" value="20">
+    <input id="grid-columns" type="number" min="4" max="12" value="9">
+    <input id="grid-rows" type="number" min="3" max="10" value="9">
+    <button id="save-settings">Salva</button>
+  </div>
 </html>

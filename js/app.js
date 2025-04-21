@@ -57,8 +57,7 @@ function initApp() {
     // Inizializza gli event listener
     initEvents();
     
-    // Renderizza la pagina corrente
-    renderCurrentPage();
+    // Renderizza la pagina corrente (ora spostato in applySettings)
     
     console.log("Applicazione inizializzata con successo!");
 }
@@ -199,6 +198,11 @@ function handleSearch() {
  * Mostra/nasconde il pannello delle impostazioni
  */
 function toggleSettingsPanel() {
+    console.log('[DEBUG] toggleSettingsPanel called');
+    if (!AppConfig.dom.settingsPanel) {
+        console.error('[DEBUG] settingsPanel element not found!');
+        return;
+    }
     AppConfig.dom.settingsPanel.classList.toggle('active');
     // Se chiudi il pannello, azzera la selezione tile
     if (!AppConfig.dom.settingsPanel.classList.contains('active')) {
@@ -208,6 +212,7 @@ function toggleSettingsPanel() {
         }
     }
 }
+
 
 /**
  * Mostra/nasconde il pannello di modifica tile

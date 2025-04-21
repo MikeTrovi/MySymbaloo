@@ -81,6 +81,9 @@ function applySettings() {
     }
     
     console.log("Impostazioni applicate all'interfaccia");
+    if (typeof switchPage === 'function') {
+        switchPage(AppConfig.currentPage);
+    }
 }
 
 /**
@@ -161,6 +164,28 @@ function showBackgroundSelection() {
             applySettings();
         }
     }
+}
+
+/**
+ * Gestione menu sidebar impostazioni
+ */
+function initSettingsSidebarMenu() {
+  const menuItems = document.querySelectorAll('.settings-menu-item');
+  const pages = document.querySelectorAll('.settings-page');
+  menuItems.forEach(btn => {
+    btn.addEventListener('click', function() {
+      menuItems.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const page = this.getAttribute('data-settings-page');
+      pages.forEach(p => {
+        if (p.getAttribute('data-settings-page') === page) {
+          p.style.display = 'block';
+        } else {
+          p.style.display = 'none';
+        }
+      });
+    });
+  });
 }
 
 /**

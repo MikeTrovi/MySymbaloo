@@ -1,4 +1,184 @@
-/* settings.css - Stile per il pannello delle impostazioni */
+/* settings.css - Stile per il pannello delle impostazioni (sidebar moderna) */
+
+.settings-panel {
+  position: fixed;
+  left: -420px; /* Hidden by default, slide out of view */
+  top: 105px;
+  bottom: 5px;
+  width: 420px;
+  max-width: 98vw;
+  min-width: 320px;
+  background: #fff;
+  border-radius: 0 15px 15px 0;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.13);
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  transition: box-shadow 0.2s, left 0.3s;
+}
+.settings-panel.active {
+  left: 65px; /* Slides in next to the sidebar */
+}
+
+.settings-overlay {
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.13);
+  z-index: 999;
+  display: none;
+}
+.settings-overlay.active {
+  display: block;
+}
+
+.settings-sidebar {
+  width: 260px;
+  background: #fff;
+  border-right: 1.5px solid #eee;
+  padding: 24px 0 24px 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.settings-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.settings-menu-section {
+  font-size: 1.07em;
+  font-weight: 600;
+  color: #222;
+  margin: 16px 0 4px 26px;
+  opacity: 0.7;
+}
+.settings-menu-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Responsive: la sidebar diventa a tutto schermo su mobile */
+@media (max-width: 700px) {
+  .settings-panel {
+    left: 0;
+    top: 60px;
+    width: 100vw;
+    min-width: unset;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .settings-sidebar {
+    width: 100vw;
+    border-right: none;
+    padding: 12px 0 12px 0;
+  }
+}
+
+.settings-menu-item {
+  gap: 14px;
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 11px 18px 11px 22px;
+  cursor: pointer;
+  border-radius: 10px 0 0 10px;
+  transition: background 0.16s;
+  font-family: inherit;
+  display: flex;
+  align-items: flex-start;
+}
+.settings-menu-item i {
+  font-size: 1.25em;
+  margin-top: 2px;
+  width: 22px;
+  text-align: center;
+  color: #777;
+}
+.settings-menu-item .menu-title {
+  font-weight: 500;
+  font-size: 1.07em;
+  color: #222;
+  margin-bottom: 1px;
+}
+.settings-menu-item .menu-desc {
+  font-size: 0.93em;
+  color: #666;
+  opacity: 0.7;
+}
+.settings-menu-item.active, .settings-menu-item:focus, .settings-menu-item:hover {
+  background: #f1f7ff;
+}
+.settings-menu-item.active .menu-title {
+  color: #1976d2;
+}
+.badge-new {
+  background: #ffc107;
+  color: #222;
+  font-size: 0.75em;
+  border-radius: 6px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.settings-main {
+  flex: 1;
+  padding: 32px 30px 32px 38px;
+  background: #fafbfc;
+  min-height: 420px;
+  box-sizing: border-box;
+  position: relative;
+  overflow-y: auto;
+}
+.settings-page {
+  display: none;
+}
+.settings-page[data-settings-page="add-tiles"] {
+  display: block;
+}
+/* Responsive */
+.settings-overlay {
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.13);
+  z-index: 999;
+  display: none;
+}
+.settings-overlay.active {
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .settings-panel {
+    flex-direction: column;
+    min-width: 0;
+  }
+  .settings-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1.5px solid #eee;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 0 0 0;
+  }
+  .settings-menu {
+    flex-direction: row;
+    gap: 0;
+  }
+  .settings-menu-item {
+    border-radius: 0;
+    padding: 10px 12px;
+    min-width: 120px;
+    justify-content: center;
+  }
+  .settings-main {
+    padding: 18px 8px 18px 8px;
+    min-height: 200px;
+  }
+}
+
 
 /* Pannello delle impostazioni */
 .settings-panel {
