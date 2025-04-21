@@ -69,7 +69,12 @@ function enableDragForTile(tileElement) {
         const dy = Math.abs(e.clientY - dragStartPos.y);
         if (!dragInitiated && (dx > 7 || dy > 7)) {
             dragInitiated = true;
-            handleDragStart(e, tileElement);
+            // Verifica quale tile è effettivamente sotto il cursore
+            const elements = document.elementsFromPoint(e.clientX, e.clientY);
+            const actualTileElement = elements.find(el => el.classList.contains('tile') && !el.classList.contains('empty'));
+            if (actualTileElement && actualTileElement === tileElement) {
+                handleDragStart(e, tileElement);
+            }
         }
     }
     function onMouseUp(e) {
@@ -113,12 +118,20 @@ function handleDragStart(e, tileElement) {
     // Memorizza la posizione originale per annullare il drag se necessario
     DragDropConfig.originalPosition = { x: tileX, y: tileY };
     
-    // Calcola l'offset del mouse rispetto all'angolo del tile e imposta dimensioni esplicite
+    // Calcola offset rispetto al container
+    const container = AppConfig.dom.tilesGrid;
+    const containerRect = container.getBoundingClientRect();
     const rect = tileElement.getBoundingClientRect();
+    
+    // CORREGGI: offset mouse rispetto al tile
     DragDropConfig.mouseOffset = {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
     };
+    
+    // Imposta posizione iniziale relativa al container
+    tileElement.style.left = `${rect.left - containerRect.left + container.scrollLeft}px`;
+    tileElement.style.top = `${rect.top - containerRect.top + container.scrollTop}px`;
     // Salva gli stili di griglia per ripristino successivo
     DragDropConfig._gridStyles = {
         gridColumnStart: tileElement.style.gridColumnStart,
@@ -126,12 +139,11 @@ function handleDragStart(e, tileElement) {
         gridColumnEnd: tileElement.style.gridColumnEnd,
         gridRowEnd: tileElement.style.gridRowEnd
     };
-    // Rimuovi gli stili di griglia per evitare conflitti con absolute
+    // Rimuovi ogni stile di grid
     tileElement.style.gridColumnStart = '';
     tileElement.style.gridRowStart = '';
     tileElement.style.gridColumnEnd = '';
     tileElement.style.gridRowEnd = '';
-    // Imposta dimensioni esplicite e stile per il drag (forza tutte le dimensioni)
     tileElement.style.width = rect.width + 'px';
     tileElement.style.height = rect.height + 'px';
     tileElement.style.minWidth = rect.width + 'px';
@@ -160,8 +172,8 @@ function handleDragStart(e, tileElement) {
     
     // Aggiungi la classe dragging al tile
     tileElement.classList.add('dragging');
-    tileElement.style.opacity = '0.5';
-    tileElement.style.transform = 'scale(1.1)';
+    tileElement.style.opacity = '0.7';
+    tileElement.style.transform = 'scale(1.05)';
     tileElement.style.position = 'absolute';
     tileElement.style.zIndex = '1000';
     // (rect già dichiarato sopra, non ridichiarare)
@@ -172,6 +184,41 @@ function handleDragStart(e, tileElement) {
     
     // Aggiorna la posizione del tile
     updateDragPosition(e);
+    
+    // --- DEBUG: mostra coordinate mouse/tile e dimensioni tile/gap temporaneamente ---
+    function debugMouseTile(e, tileElement) {
+        let debug = document.getElementById('drag-debug');
+        if (!debug) {
+            debug = document.createElement('div');
+            debug.id = 'drag-debug';
+            debug.style.position = 'fixed';
+            debug.style.top = '10px';
+            debug.style.right = '10px';
+            debug.style.background = 'rgba(0,0,0,0.7)';
+            debug.style.color = 'white';
+            debug.style.zIndex = '9999';
+            debug.style.fontSize = '12px';
+            debug.style.padding = '6px 10px';
+            debug.style.borderRadius = '8px';
+            document.body.appendChild(debug);
+        }
+        const rect = tileElement.getBoundingClientRect();
+        const tileSize = getComputedStyle(document.documentElement).getPropertyValue('--tile-size');
+        const tileGap = getComputedStyle(document.documentElement).getPropertyValue('--tile-gap');
+        const container = AppConfig.dom.tilesGrid;
+        const containerStyle = getComputedStyle(container);
+        const paddingLeft = containerStyle.paddingLeft;
+        const marginLeft = containerStyle.marginLeft;
+        let offsetGridLeft = 0;
+        const firstTile = container.querySelector('.tile:not(.tile-drop-zone)');
+        if (firstTile) {
+            const tileRect = firstTile.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            offsetGridLeft = tileRect.left - containerRect.left;
+        }
+        debug.innerHTML = `Mouse: (${e.clientX}, ${e.clientY})<br>Tile: (${Math.round(rect.left)}, ${Math.round(rect.top)})<br>tile.offsetWidth: ${tileElement.offsetWidth}<br>tileSize(var): ${tileSize}<br>tileGap(var): ${tileGap}<br>paddingLeft: ${paddingLeft}<br>marginLeft: ${marginLeft}<br>offsetGridLeft: ${offsetGridLeft}`;
+    }
+    debugMouseTile(e, tileElement);
     
     console.log(`Iniziato drag del tile ${tileId} da posizione (${tileX}, ${tileY})`);
 }
@@ -222,19 +269,18 @@ function handleDragEnd(e) {
         DragDropConfig.draggedElement.classList.remove('dragging');
         DragDropConfig.draggedElement.style.position = '';
         DragDropConfig.draggedElement.style.zIndex = '';
-        DragDropConfig.draggedElement.style.pointerEvents = '';
+        DragDropConfig.draggedElement.style.opacity = '';
+        DragDropConfig.draggedElement.style.transform = '';
+        DragDropConfig.draggedElement.style.left = '';
+        DragDropConfig.draggedElement.style.top = '';
         DragDropConfig.draggedElement.style.width = '';
         DragDropConfig.draggedElement.style.height = '';
         DragDropConfig.draggedElement.style.minWidth = '';
         DragDropConfig.draggedElement.style.minHeight = '';
         DragDropConfig.draggedElement.style.maxWidth = '';
         DragDropConfig.draggedElement.style.maxHeight = '';
-        DragDropConfig.draggedElement.style.left = '';
-        DragDropConfig.draggedElement.style.top = '';
-        DragDropConfig.draggedElement.style.transform = '';
-        DragDropConfig.draggedElement.style.opacity = '';
         DragDropConfig.draggedElement.style.boxSizing = '';
-        // Ripristina gli stili di griglia
+        // Ripristina stili di grid
         if (DragDropConfig._gridStyles) {
             DragDropConfig.draggedElement.style.gridColumnStart = DragDropConfig._gridStyles.gridColumnStart;
             DragDropConfig.draggedElement.style.gridRowStart = DragDropConfig._gridStyles.gridRowStart;
@@ -248,11 +294,11 @@ function handleDragEnd(e) {
     removePlaceholder();
 
     // Calcola la posizione finale della griglia
-    const finalPosition = calculateGridPosition(e);
-
-    // Verifica se è possibile rilasciare il tile in questa posizione
+    let finalPosition = { x: DragDropConfig.originalPosition.x, y: DragDropConfig.originalPosition.y };
     if (DragDropConfig.canDrop) {
         // Aggiorna la posizione del tile nei dati
+        const mouseEvent = e.changedTouches ? e.changedTouches[0] : e;
+        finalPosition = calculateGridPosition(mouseEvent);
         updateTilePosition(DragDropConfig.draggedTile.id, finalPosition.x, finalPosition.y);
     }
 
@@ -265,6 +311,10 @@ function handleDragEnd(e) {
     // Ridisegna la griglia per riflettere le modifiche
     renderCurrentPage();
 
+    // RIMUOVI DEBUG
+    const dbg = document.getElementById('drag-debug');
+    if (dbg) dbg.remove();
+    
     console.log(`Fine del drag, posizione finale: (${finalPosition.x}, ${finalPosition.y})`);
 }
 
@@ -277,23 +327,59 @@ function updateDragPosition(e) {
         return;
     }
     
-    // Calcola la nuova posizione del tile
     const container = AppConfig.dom.tilesGrid;
     const containerRect = container.getBoundingClientRect();
-    const scrollLeft = container.scrollLeft || 0;
-    const scrollTop = container.scrollTop || 0;
+    const scrollLeft = container.scrollLeft;
+    const scrollTop = container.scrollTop;
     
-    // Applica la posizione assoluta per il dragging
-    DragDropConfig.draggedElement.style.position = 'absolute';
-    DragDropConfig.draggedElement.style.zIndex = '1000';
-    
-    // Calcola la posizione tenendo conto dell'offset del mouse e dello scroll
+    // Calcola posizione relativa al container
     const left = e.clientX - containerRect.left + scrollLeft - DragDropConfig.mouseOffset.x;
     const top = e.clientY - containerRect.top + scrollTop - DragDropConfig.mouseOffset.y;
     
     // Applica la nuova posizione
     DragDropConfig.draggedElement.style.left = `${left}px`;
     DragDropConfig.draggedElement.style.top = `${top}px`;
+    
+    // Sincronizza con la posizione del placeholder
+    const gridPosition = calculateGridPosition(e);
+    if (DragDropConfig.placeholder) {
+        updatePlaceholder(gridPosition.x, gridPosition.y);
+    }
+    
+    // --- DEBUG: mostra coordinate mouse/tile e dimensioni tile/gap temporaneamente ---
+    function debugMouseTile(e, tileElement) {
+        let debug = document.getElementById('drag-debug');
+        if (!debug) {
+            debug = document.createElement('div');
+            debug.id = 'drag-debug';
+            debug.style.position = 'fixed';
+            debug.style.top = '10px';
+            debug.style.right = '10px';
+            debug.style.background = 'rgba(0,0,0,0.7)';
+            debug.style.color = 'white';
+            debug.style.zIndex = '9999';
+            debug.style.fontSize = '12px';
+            debug.style.padding = '6px 10px';
+            debug.style.borderRadius = '8px';
+            document.body.appendChild(debug);
+        }
+        const rect = tileElement.getBoundingClientRect();
+        const tileSize = getComputedStyle(document.documentElement).getPropertyValue('--tile-size');
+        const tileGap = getComputedStyle(document.documentElement).getPropertyValue('--tile-gap');
+        const container = AppConfig.dom.tilesGrid;
+        const containerStyle = getComputedStyle(container);
+        const paddingLeft = containerStyle.paddingLeft;
+        const marginLeft = containerStyle.marginLeft;
+        let offsetGridLeft = 0;
+        const firstTile = container.querySelector('.tile:not(.tile-drop-zone)');
+        if (firstTile) {
+            const tileRect = firstTile.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            offsetGridLeft = tileRect.left - containerRect.left;
+        }
+        debug.innerHTML = `Mouse: (${e.clientX}, ${e.clientY})<br>Tile: (${Math.round(rect.left)}, ${Math.round(rect.top)})<br>tile.offsetWidth: ${tileElement.offsetWidth}<br>tileSize(var): ${tileSize}<br>tileGap(var): ${tileGap}<br>paddingLeft: ${paddingLeft}<br>marginLeft: ${marginLeft}<br>offsetGridLeft: ${offsetGridLeft}`;
+    }
+    debugMouseTile(e, DragDropConfig.draggedElement);
 }
 
 /**
@@ -304,19 +390,26 @@ function updateDragPosition(e) {
 function calculateGridPosition(e) {
     const container = AppConfig.dom.tilesGrid;
     const containerRect = container.getBoundingClientRect();
+    const scrollLeft = container.scrollLeft;
+    const scrollTop = container.scrollTop;
     
     const tileSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-size')) || 80;
-    const tileGap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-gap')) || 5;
+    const tileGap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-gap')) || 10;
     const totalTileSize = tileSize + tileGap;
-    
-    // Calcola la posizione relativa del mouse all'interno del container
-    const relativeX = e.clientX - containerRect.left;
-    const relativeY = e.clientY - containerRect.top;
-    
-    // Converti in coordinate della griglia
-    const gridX = Math.floor(relativeX / totalTileSize);
-    const gridY = Math.floor(relativeY / totalTileSize);
-    
+    const gridColumns = AppConfig.settings?.gridColumns || 8;
+    // Calcola la larghezza della griglia effettiva
+    const gridWidth = gridColumns * tileSize + (gridColumns - 1) * tileGap;
+    const containerWidth = container.clientWidth;
+    // Calcola il bordo sinistro della griglia centrata
+    let gridLeft = 0;
+    if (getComputedStyle(container).justifyContent === 'center') {
+        gridLeft = (containerWidth - gridWidth) / 2;
+    }
+    // Calcola la posizione del mouse rispetto all'inizio reale della griglia
+    const relativeX = e.clientX - containerRect.left + scrollLeft - gridLeft;
+    const relativeY = e.clientY - containerRect.top + scrollTop;
+    const gridX = Math.max(0, Math.floor(relativeX / totalTileSize));
+    const gridY = Math.max(0, Math.floor(relativeY / totalTileSize));
     return { x: gridX, y: gridY };
 }
 
@@ -400,7 +493,7 @@ function createPlaceholder(x, y, width, height) {
  * @param {number} y - Nuova coordinata y
  */
 function updatePlaceholder(x, y) {
-    if (!DragDropConfig.placeholder) {
+    if (!DragDropConfig.placeholder || !DragDropConfig.draggedElement) {
         return;
     }
     
@@ -412,20 +505,23 @@ function updatePlaceholder(x, y) {
     const tileWidth = parseInt(DragDropConfig.draggedElement.getAttribute('data-width'));
     const tileHeight = parseInt(DragDropConfig.draggedElement.getAttribute('data-height'));
     
-    // Limita la posizione entro i confini della griglia
-    x = Math.max(0, Math.min(x, gridColumns - tileWidth));
-    y = Math.max(0, Math.min(y, gridRows - tileHeight));
+    // Calcola la posizione centrale del tile
+    const centerX = x + Math.floor(tileWidth/2);
+    const centerY = y + Math.floor(tileHeight/2);
     
+    // Limita la posizione entro i confini della griglia
+    x = Math.max(0, Math.min(centerX - Math.floor(tileWidth/2), gridColumns - tileWidth));
+    y = Math.max(0, Math.min(centerY - Math.floor(tileHeight/2), gridRows - tileHeight));
+    
+    // CORREGGI: calcolo posizione placeholder
     // Aggiorna la posizione del placeholder
     DragDropConfig.placeholder.style.gridColumnStart = x + 1;
     DragDropConfig.placeholder.style.gridRowStart = y + 1;
+    DragDropConfig.placeholder.style.gridColumnEnd = `span ${tileWidth}`;
+    DragDropConfig.placeholder.style.gridRowEnd = `span ${tileHeight}`;
     
     // Aggiorna la classe in base alla validità del drop
-    if (DragDropConfig.canDrop) {
-        DragDropConfig.placeholder.classList.remove('invalid');
-    } else {
-        DragDropConfig.placeholder.classList.add('invalid');
-    }
+    DragDropConfig.placeholder.classList.toggle('invalid', !DragDropConfig.canDrop);
 }
 
 /**

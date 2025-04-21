@@ -144,10 +144,11 @@
 
 /* Stile per i tile durante il drag */
 .tile.dragging {
-    opacity: 0.7;
-    z-index: 10;
-    transform: scale(1.05);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    opacity: 0.7 !important;
+    z-index: 1001 !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+    transition: none !important;
 }
 
 /* ==========================================
@@ -339,13 +340,17 @@
    Spazio di rilascio per drag and drop
    ========================================== */
 .tile-drop-zone {
-    background-color: rgba(46, 204, 113, 0.2);
-    border: 2px dashed #2ecc71;
+    background-color: rgba(46, 204, 113, 0.15) !important;
+    border: 2.5px dashed #2ecc71 !important;
+    opacity: 0.8 !important;
+    z-index: 1002 !important;
+    pointer-events: none;
+    transition: background 0.18s, border 0.18s, opacity 0.18s;
 }
 
 .tile-drop-zone.invalid {
-    background-color: rgba(231, 76, 60, 0.2);
-    border: 2px dashed #e74c3c;
+    background-color: rgba(231, 76, 60, 0.18) !important;
+    border: 2.5px dashed #e74c3c !important;
 }
 
 /* ==========================================
