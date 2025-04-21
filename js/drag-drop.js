@@ -60,15 +60,32 @@ function enableDragForTile(tileElement) {
         return;
     }
     
-    // Aggiungi l'evento di mousedown per iniziare il drag
+    // Drag subito al mousedown (se non click su tile-action)
+    let dragStartPos = null;
+    let dragInitiated = false;
+    function onMouseMove(e) {
+        if (!dragStartPos) return;
+        const dx = Math.abs(e.clientX - dragStartPos.x);
+        const dy = Math.abs(e.clientY - dragStartPos.y);
+        if (!dragInitiated && (dx > 7 || dy > 7)) {
+            dragInitiated = true;
+            handleDragStart(e, tileElement);
+        }
+    }
+    function onMouseUp(e) {
+        dragStartPos = null;
+        dragInitiated = false;
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+    }
     tileElement.addEventListener('mousedown', (e) => {
-        // Ignora il drag se il click è su un'azione
         if (e.target.closest('.tile-action')) {
             return;
         }
-        
-        // Altrimenti, inizia il drag
-        handleDragStart(e, tileElement);
+        dragStartPos = { x: e.clientX, y: e.clientY };
+        dragInitiated = false;
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
     });
 }
 

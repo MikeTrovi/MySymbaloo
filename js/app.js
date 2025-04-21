@@ -200,6 +200,13 @@ function handleSearch() {
  */
 function toggleSettingsPanel() {
     AppConfig.dom.settingsPanel.classList.toggle('active');
+    // Se chiudi il pannello, azzera la selezione tile
+    if (!AppConfig.dom.settingsPanel.classList.contains('active')) {
+        AppConfig.editingTile = null;
+        if (typeof renderCurrentPage === 'function') {
+            renderCurrentPage();
+        }
+    }
 }
 
 /**
@@ -221,6 +228,10 @@ function openTileEditPanel(tile = null) {
         AppConfig.editingTile = null;
         resetTileEditForm();
     }
+    // Aggiorna la griglia per evidenziare il tile selezionato
+    if (typeof renderCurrentPage === 'function') {
+        renderCurrentPage();
+    }
     
     // Mostra il pannello
     AppConfig.dom.tileEditPanel.classList.add('active');
@@ -232,6 +243,9 @@ function openTileEditPanel(tile = null) {
 function closeTileEditPanel() {
     AppConfig.dom.tileEditPanel.classList.remove('active');
     AppConfig.editingTile = null;
+    if (typeof renderCurrentPage === 'function') {
+        renderCurrentPage();
+    }
 }
 
 /**

@@ -52,7 +52,11 @@ function renderCurrentPage() {
     });
     
     // Renderizza i tile esistenti
-    tiles.forEach(tile => renderTile(tile));
+    tiles.forEach(tile => {
+        renderTile(tile);
+    });
+
+
     
     // Aggiungi tile vuoti nelle celle non occupate se l'opzione è abilitata
     if (AppConfig.settings?.showEmptyTiles) {
@@ -86,6 +90,23 @@ function renderCurrentPage() {
             }
         }
     });
+
+    // --- SELEZIONE TILE DOPO IL RENDER COMPLETO ---
+    const allTileEls = AppConfig.dom.tilesGrid.querySelectorAll('.tile');
+    allTileEls.forEach(tileEl => tileEl.classList.remove('tile-selected'));
+    // DEBUG LOG
+    console.log('[DEBUG] AppConfig.editingTile:', AppConfig.editingTile);
+    console.log('[DEBUG] allTileEls:', allTileEls);
+    // Evidenzia il tile selezionato per la modifica
+    if (AppConfig.editingTile && AppConfig.editingTile.id) {
+        const selectedTileEl = AppConfig.dom.tilesGrid.querySelector(`#${AppConfig.editingTile.id}`);
+        console.log('[DEBUG] selectedTileEl:', selectedTileEl);
+        if (selectedTileEl) {
+            selectedTileEl.classList.add('tile-selected');
+        } else {
+            console.warn('[DEBUG] Nessun elemento trovato con id:', AppConfig.editingTile.id);
+        }
+    }
 
     console.log(`Pagina "${currentPage.name}" renderizzata con ${tiles.length} tile`);
 }
@@ -128,7 +149,14 @@ function renderTile(tile) {
     // Contenuto del tile in base al tipo
     if (tile.type === 'empty') {
         // Per i tile vuoti, aggiungi solo l'evento click per la creazione
-        tileElement.addEventListener('click', () => openTileEditPanel({ x: tile.x, y: tile.y }));
+        tileElement.addEventListener('click', () => openTileEditPanel({
+    id: `empty_${tile.x}_${tile.y}`,
+    x: tile.x,
+    y: tile.y,
+    type: 'empty',
+    width: 1,
+    height: 1
+}));
     } else if (tile.type === 'group') {
         // Per i tile di gruppo, aggiungi l'icona della cartella e il titolo
         tileElement.innerHTML = `
@@ -246,20 +274,45 @@ if (editAction) {
         tileElement.querySelector('.open-action').addEventListener('click', (e) => {
             e.stopPropagation();
             if (tile.url) {
-                window.open(tile.url, '_blank');
+                let urlToOpen = tile.url.trim();
+                // Se l'URL non inizia con http:// o https://, aggiungi https://
+                if (!/^https?:\/\//i.test(urlToOpen)) {
+                    urlToOpen = 'https://' + urlToOpen;
+                }
+                window.open(urlToOpen, '_blank');
             }
         });
         
         // Evento click sul tile per aprire l'URL
-        tileElement.addEventListener('click', () => {
-            if (tile.url) {
-                window.location.href = tile.url;
+        // Click sul tile: solo per tile singoli apri il link nella stessa pagina
+if (tile.type === 'single') {
+    tileElement.addEventListener('click', (e) => {
+        console.log('[DEBUG TILE CLICK]', tileElement, e.target);
+        // Se il click arriva da una tile-action (freccia, modifica, elimina), non aprire il link
+        if (e.target.closest('.tile-action')) {
+            console.log('[DEBUG TILE CLICK] click su tile-action, ignoro');
+            return;
+        }
+        if (tile.url) {
+            let urlToOpen = tile.url.trim();
+            // Se l'URL non inizia con http:// o https://, aggiungi https://
+            if (!/^https?:\/\//i.test(urlToOpen)) {
+                urlToOpen = 'https://' + urlToOpen;
             }
-        });
+            console.log('[DEBUG TILE CLICK] apro url:', urlToOpen);
+            window.location.href = urlToOpen;
+        } else {
+            console.log('[DEBUG TILE CLICK] nessun url');
+        }
+    });
+}
+
     }
     
-    // Aggiungi il tile alla griglia
+    // Aggiungi il tile alla griglia SOLO una volta impostati tutti gli eventi
     AppConfig.dom.tilesGrid.appendChild(tileElement);
+    // Restituisci l'elemento per eventuali usi futuri
+    return tileElement;
 }
 
 /**

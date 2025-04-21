@@ -124,6 +124,23 @@ input[type="color"] {
     cursor: pointer;
 }
 
+/* Evidenziazione tile selezionato */
+.tile-selected {
+    border: 5px solid #1976d2 !important;
+    box-shadow: 0 0 12px 4px #1976d2aa;
+    opacity: 0.7;
+    z-index: 10;
+    animation: tile-border-blink 1s infinite;
+    transition: border 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+@keyframes tile-border-blink {
+    0%, 100% { border-color: #1976d2; box-shadow: 0 0 12px 4px #1976d2aa; }
+    50% { border-color: #42a5f5; box-shadow: 0 0 24px 8px #42a5f5cc; }
+}
+
+
+
 /* Responsive design */
 @media (max-width: 768px) {
     .main-container {
