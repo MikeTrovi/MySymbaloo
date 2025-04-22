@@ -181,21 +181,19 @@ function showBackgroundSelection() {
 /**
  * Gestione menu sidebar impostazioni
  */
-function initSettingsSidebarMenu() {
+window.initSettingsSidebarMenu = function initSettingsSidebarMenu() {
   const menuItems = document.querySelectorAll('.settings-menu-item');
   const pages = document.querySelectorAll('.settings-page');
   menuItems.forEach(btn => {
-    btn.addEventListener('click', function() {
-      menuItems.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+    // Rimuovi tutti i listener precedenti clonando il nodo
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', function() {
       const page = this.getAttribute('data-settings-page');
-      pages.forEach(p => {
-        if (p.getAttribute('data-settings-page') === page) {
-          p.style.display = 'block';
-        } else {
-          p.style.display = 'none';
-        }
-      });
+      console.debug('[DEBUG] Click menu item:', page, this);
+      if (typeof window.showSettingsPage === 'function') {
+        window.showSettingsPage(page);
+      }
     });
   });
 }
