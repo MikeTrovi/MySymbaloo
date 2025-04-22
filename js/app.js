@@ -152,17 +152,17 @@ function initEvents() {
     });
     
     // Eventi della sidebar
-    AppConfig.dom.settingsButton.addEventListener('click', toggleSettingsPanel);
-    AppConfig.dom.homeButton.addEventListener('click', () => switchPage('home'));
-    AppConfig.dom.addPageButton.addEventListener('click', showAddPageDialog);
+    if (AppConfig.dom.settingsButton) AppConfig.dom.settingsButton.addEventListener('click', toggleSettingsPanel);
+    if (AppConfig.dom.homeButton) AppConfig.dom.homeButton.addEventListener('click', () => switchPage('home'));
+    if (AppConfig.dom.addPageButton) AppConfig.dom.addPageButton.addEventListener('click', showAddPageDialog);
     
     // Eventi dei pannelli
-    AppConfig.dom.closeSettings.addEventListener('click', toggleSettingsPanel);
-    AppConfig.dom.closeEdit.addEventListener('click', closeTileEditPanel);
-    AppConfig.dom.closeGroup.addEventListener('click', closeGroupOverlay);
+    if (AppConfig.dom.closeSettings) AppConfig.dom.closeSettings.addEventListener('click', toggleSettingsPanel);
+    if (AppConfig.dom.closeEdit) AppConfig.dom.closeEdit.addEventListener('click', closeTileEditPanel);
+    if (AppConfig.dom.closeGroup) AppConfig.dom.closeGroup.addEventListener('click', closeGroupOverlay);
     
     // Eventi delle impostazioni
-    AppConfig.dom.settingsForm.saveSettings.addEventListener('click', saveSettings);
+    if (AppConfig.dom.settingsForm.saveSettings) AppConfig.dom.settingsForm.saveSettings.addEventListener('click', saveSettings);
     
     // Inizializza gli eventi del pannello impostazioni per aggiornamenti in tempo reale
     initSettingsEvents();

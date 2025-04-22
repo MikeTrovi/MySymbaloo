@@ -9,18 +9,27 @@
  * Carica i dati dell'applicazione (impostazioni e pagine)
  */
 function loadAppData() {
-    // Carica le impostazioni
-    const settings = loadFromStorage('settings') || AppConfig.defaultSettings;
-    
-    // Imposta i valori predefiniti se mancanti
-    for (const key in AppConfig.defaultSettings) {
-        if (settings[key] === undefined) {
-            settings[key] = AppConfig.defaultSettings[key];
+    // Carica tutte le impostazioni per pagina
+    let allSettings = loadFromStorage('settings') || {};
+    // Se non ci sono impostazioni per la Home, prova a prenderle dalla pagina nascosta
+    if (!allSettings.home) {
+        const hidden = document.getElementById('hidden-settings-fields');
+        if (hidden) {
+            allSettings.home = {
+                appName: hidden.querySelector('#app-name')?.value || 'My Symbaloo',
+                windowColor: hidden.querySelector('#window-color')?.value || '#a52a2a',
+                emptyTileColor: hidden.querySelector('#empty-tile-color')?.value || '#800080',
+                enableBackground: hidden.querySelector('#enable-background')?.checked || false,
+                showEmptyTiles: hidden.querySelector('#show-empty-tiles')?.checked || true,
+                windowOpacity: parseInt(hidden.querySelector('#transparency-slider')?.value) || 20,
+                gridColumns: parseInt(hidden.querySelector('#grid-columns')?.value) || 9,
+                gridRows: parseInt(hidden.querySelector('#grid-rows')?.value) || 9
+            };
+        } else {
+            allSettings.home = AppConfig.defaultSettings;
         }
     }
-    
-    // Salva le impostazioni
-    AppConfig.settings = settings;
+    AppConfig.settings = allSettings;
     
     // Carica le pagine
     const pages = loadFromStorage('pages') || AppConfig.defaultPages;
@@ -32,14 +41,15 @@ function loadAppData() {
     // Renderizza i bottoni delle pagine
     renderPageButtons();
     
-    console.log("Dati dell'applicazione caricati", { settings, pages });
+    console.log("Dati dell'applicazione caricati", { allSettings, pages });
 }
 
 /**
  * Applica le impostazioni attuali all'interfaccia
  */
 function applySettings() {
-    const settings = AppConfig.settings;
+    const pageId = AppConfig.currentPage || 'home';
+    const settings = AppConfig.settings[pageId] || AppConfig.settings.home;
     
     // Aggiorna l'interfaccia delle impostazioni
     updateSettingsInterface();
@@ -90,7 +100,8 @@ function applySettings() {
  * Aggiorna l'interfaccia del pannello impostazioni con i valori attuali
  */
 function updateSettingsInterface() {
-    const settings = AppConfig.settings;
+    const pageId = AppConfig.currentPage || 'home';
+    const settings = AppConfig.settings[pageId] || AppConfig.settings.home;
     const form = AppConfig.dom.settingsForm;
     
     // Imposta i valori dei campi del form
@@ -126,11 +137,12 @@ function saveSettings() {
     if (settings.gridRows < 3) settings.gridRows = 3;
     if (settings.gridRows > 10) settings.gridRows = 10;
     
-    // Aggiorna le impostazioni
-    AppConfig.settings = settings;
+    // Aggiorna le impostazioni solo per la pagina corrente
+    const pageId = AppConfig.currentPage || 'home';
+    AppConfig.settings[pageId] = settings;
     
-    // Salva le impostazioni
-    saveToStorage('settings', settings);
+    // Salva tutte le impostazioni
+    saveToStorage('settings', AppConfig.settings);
     
     // Applica le impostazioni
     applySettings();

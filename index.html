@@ -24,11 +24,11 @@
     <div class="search-engine-selector" id="search-engine-selector">
         <img id="search-engine-logo" src="assets/search-logos/google.svg" alt="Google" />
     </div>
-                <input type="text" id="search-input" placeholder="Cerca su internet...">
+                    <input type="text" id="search-input" placeholder="Cerca su internet...">
                 <button id="search-button"><i class="fas fa-search"></i></button>
             </div>
-        </div>
-    </header>
+            </div>
+        </header>
 
     <!-- Struttura principale della pagina -->
     <img src="assets/logo/logo.png" alt="Logo MySymbaloo" id="about-logo" class="sidebar-logo" style="width:65px; height:65px; cursor:pointer; display:block;" />
@@ -50,8 +50,8 @@
                     <div id="pages-buttons" class="page-buttons-container">
                         <!-- I bottoni delle pagine aggiuntive verranno inseriti dinamicamente qui -->
                     </div>
-                </div>
-                
+                    </div>
+                    
                 <div class="sidebar-bottom">
                     <!-- Bottone per aggiungere nuova pagina -->
                     <button id="add-page-button" class="sidebar-button">
@@ -65,54 +65,56 @@
                         <i class="fas fa-floppy-disk"></i>
                     </button>
                 </div>
+                </div>
             </div>
-        </div>
-
+    
         <!-- Area principale con la griglia di tiles -->
         <div class="tiles-container" id="tiles-grid">
             <!-- I tiles verranno generati dinamicamente qui -->
         </div>
-    </div>
-
+        </div>
+    
     <!-- Pannello impostazioni (nascosto di default) -->
     <div class="settings-panel" id="settings-panel">
   <div class="settings-sidebar">
     <div class="settings-menu">
-      <button class="settings-menu-item active" data-settings-page="add-tiles">
+        <!-- Qui va il menu -->
+
+      <button class="settings-menu-item" data-settings-page="add-tiles">
         <i class="fas fa-plus"></i>
         <div>
           <div class="menu-title">Add Tiles</div>
           <div class="menu-desc">Add Tiles from URL or our collection</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="customize-tiles">
         <i class="fas fa-th-large"></i>
         <div>
           <div class="menu-title">Customize Tiles</div>
           <div class="menu-desc">Set Tile color, size and icon</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="markers">
         <i class="fas fa-border-all"></i>
         <div>
           <div class="menu-title">Markers</div>
           <div class="menu-desc">Mark Tiles with label & color</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="groups">
         <i class="fas fa-object-group"></i>
         <div>
           <div class="menu-title">Groups</div>
           <div class="menu-desc">Group Tiles together in one Tile</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="learning-paths">
         <i class="fas fa-route"></i>
         <div>
           <div class="menu-title">Learning Paths <span class="badge-new">NEW!</span></div>
           <div class="menu-desc">Create a Learning Path and add Activities</div>
         </div>
-      </button>
+          </button>
       <div class="settings-menu-section">Webmix Customization</div>
       <button class="settings-menu-item" data-settings-page="general">
         <i class="fas fa-font"></i>
@@ -120,28 +122,28 @@
           <div class="menu-title">General</div>
           <div class="menu-desc">Set Webmix name, color and icon</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="background">
         <i class="fas fa-image"></i>
         <div>
           <div class="menu-title">Background</div>
           <div class="menu-desc">Set background for this Webmix</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="size">
         <i class="fas fa-expand-arrows-alt"></i>
         <div>
           <div class="menu-title">Size</div>
           <div class="menu-desc">Resize the Webmix to fit your Tiles</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="style">
         <i class="fas fa-th"></i>
         <div>
           <div class="menu-title">Style</div>
           <div class="menu-desc">Set shape of Tiles on Webmix</div>
         </div>
-      </button>
+          </button>
       <div class="settings-menu-section">Misc Options</div>
       <button class="settings-menu-item" data-settings-page="collaborate">
         <i class="fas fa-users"></i>
@@ -149,31 +151,18 @@
           <div class="menu-title">Collaborate</div>
           <div class="menu-desc">Work together on this Webmix</div>
         </div>
-      </button>
+          </button>
       <button class="settings-menu-item" data-settings-page="remove">
         <i class="fas fa-trash"></i>
         <div>
           <div class="menu-title">Remove</div>
           <div class="menu-desc">Remove this Webmix</div>
         </div>
-      </button>
+          </button>
     </div>
-  </div>
-  <div class="settings-main" id="settings-main-content">
-    <!-- Qui verrà mostrata la pagina selezionata -->
-    <div class="settings-page" data-settings-page="add-tiles">Pagina Add Tiles (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="customize-tiles" style="display:none">Pagina Customize Tiles (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="markers" style="display:none">Pagina Markers (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="groups" style="display:none">Pagina Groups (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="learning-paths" style="display:none">Pagina Learning Paths (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="general" style="display:none">Pagina General (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="background" style="display:none">Pagina Background (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="size" style="display:none">Pagina Size (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="style" style="display:none">Pagina Style (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="collaborate" style="display:none">Pagina Collaborate (personalizzabile)</div>
-    <div class="settings-page" data-settings-page="remove" style="display:none">Pagina Remove (personalizzabile)</div>
-  </div>
-
+      </div>
+    <div id="settings-page-content"></div>
+    
     <!-- Pannello di modifica tile (nascosto di default) -->
     <div class="tile-edit-panel" id="tile-edit-panel">
         <div class="opaque-content">
@@ -181,7 +170,7 @@
                 <h2 id="edit-panel-title">Crea nuovo tile</h2>
                 <button id="close-edit" class="close-button"><i class="fas fa-times"></i></button>
             </div>
-            <div class="edit-content">
+                <div class="edit-content">
                 <div class="edit-item">
                     <label for="tile-type">Tipo di tile:</label>
                     <select id="tile-type">
@@ -189,7 +178,7 @@
                         <option value="group">Gruppo di tile</option>
                     </select>
                 </div>
-                <div class="edit-item">
+                    <div class="edit-item">
                     <label for="tile-icon-type">Tipo di icona:</label>
                     <select id="tile-icon-type">
                         <option value="predefined">Icona predefinita</option>
@@ -197,27 +186,27 @@
                         <option value="upload">Carica dal disco</option>
                     </select>
                 </div>
-                <div class="edit-item icon-selection">
+                    <div class="edit-item icon-selection">
                     <div id="predefined-icons" class="icon-grid"></div>
                     <div id="upload-icon-area" style="display: none;">
                         <input type="file" id="icon-file" accept="image/*">
                     </div>
-                    <div id="online-icon-area" style="display: none;">
+                        <div id="online-icon-area" style="display: none;">
                         <input type="text" id="icon-url" placeholder="URL dell'icona">
                     </div>
-                    <div class="icon-preview">
+                        <div class="icon-preview">
                         <div id="icon-preview-container"></div>
                     </div>
-                </div>
-                <div class="edit-item">
+                    </div>
+                    <div class="edit-item">
                     <label for="tile-title">Titolo:</label>
                     <input type="text" id="tile-title" placeholder="Titolo del tile">
                 </div>
-                <div class="edit-item" id="url-container">
+                    <div class="edit-item" id="url-container">
                     <label for="tile-url">URL:</label>
                     <input type="text" id="tile-url" placeholder="https://...">
                 </div>
-                <div class="edit-item">
+                    <div class="edit-item">
                     <label for="tile-display">Visualizza:</label>
                     <select id="tile-display">
                         <option value="title">Solo titolo</option>
@@ -226,19 +215,19 @@
                         <option value="none">Nessuno</option>
                     </select>
                 </div>
-                <div class="edit-item">
+                    <div class="edit-item">
                     <label for="tile-color">Colore del tile:</label>
                     <input type="color" id="tile-color" value="#3498db">
                 </div>
-                <div class="edit-item preview-section" style="margin-bottom: 15px;">
+                    <div class="edit-item preview-section" style="margin-bottom: 15px;">
                     <div class="preview-label">Preview</div>
                     <div class="tile-preview">
                         <div id="tile-preview-display" class="preview-display">
                             <div id="icon-preview-container" style="width: 45px; height: 45px;"></div>
                         </div>
+                        </div>
                     </div>
-                </div>
-                <div class="edit-item" id="tile-size-container">
+                    <div class="edit-item" id="tile-size-container">
                     <div class="section-title">Dimensione</div>
                     <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 0;">
   <!-- Riga principale: quadrato + pulsanti destra/sinistra -->
@@ -248,8 +237,8 @@
       <div id="tile-dimension-square" style="width: 72px; height: 72px; background: #dedede; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: absolute; left: 4px; top: 4px;">
         <span id="visual-dimension">1x1</span>
       </div>
-    </div>
-    <!-- Pulsanti destra/sinistra -->
+        </div>
+        <!-- Pulsanti destra/sinistra -->
     <div style="width: 20px; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; margin-left: 4px;">
       <button type="button" id="width-decrease" class="dim-circle-btn" style="width:22px;height:22px;" onclick="adjustTileWidth(-1);" title="Riduci larghezza">
         <i class="fas fa-chevron-left"></i>
@@ -258,7 +247,7 @@
         <i class="fas fa-chevron-right"></i>
       </button>
     </div>
-  </div>
+      </div>
   <!-- Riga sotto: pulsanti su/giù -->
   <div style="width: 80px; height: 20px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px; margin-top: 4px;">
     <button type="button" id="height-increase" class="dim-circle-btn" style="width:22px;height:22px;" onclick="adjustTileHeight(1);" title="Aumenta altezza">
@@ -274,36 +263,36 @@
                         <label for="tile-width">Larghezza:</label>
                         <input type="number" id="tile-width" min="1" max="6" value="1">
                     </div>
-                    <div style="display: none;">
+                        <div style="display: none;">
                         <label for="tile-height">Altezza:</label>
                         <input type="number" id="tile-height" min="1" max="6" value="1">
                     </div>
-                </div>
-                <div class="edit-item" id="group-size-container" style="display: none;">
+                    </div>
+                    <div class="edit-item" id="group-size-container" style="display: none;">
                     <label>Dimensione del gruppo:</label>
                     <div class="size-selector">
                         <div>
                             <label for="group-columns">Colonne:</label>
                             <input type="number" id="group-columns" min="2" max="6" value="2">
                         </div>
-                        <div>
+                            <div>
                             <label for="group-rows">Righe:</label>
                             <input type="number" id="group-rows" min="2" max="6" value="2">
                         </div>
+                        </div>
                     </div>
-                </div>
-                <div class="edit-item">
+                    <div class="edit-item">
                     <label for="tile-locked">Blocca posizione:</label>
                     <input type="checkbox" id="tile-locked">
                 </div>
-                <div class="edit-actions">
+                    <div class="edit-actions">
                     <button id="save-tile" class="primary-button">Salva</button>
                     <button id="cancel-edit" class="secondary-button">Annulla</button>
                 </div>
+                </div>
             </div>
         </div>
-    </div>
-
+    
     <!-- Overlay per i popup dei gruppi -->
     <div id="group-overlay" class="group-overlay">
         <div class="group-popup">
@@ -311,17 +300,17 @@
                 <h3 id="group-title">Gruppo</h3>
                 <button id="close-group" class="close-button"><i class="fas fa-times"></i></button>
             </div>
-            <div id="group-tiles" class="group-tiles-container">
+                <div id="group-tiles" class="group-tiles-container">
                 <!-- I tiles del gruppo verranno generati qui -->
             </div>
-            <div class="group-footer">
+                <div class="group-footer">
                 <button id="add-group-tile" class="primary-button">
                     <i class="fas fa-plus"></i> Aggiungi tile
                 </button>
             </div>
+            </div>
         </div>
-    </div>
-
+    
     <!-- Script JavaScript separati per funzionalità -->
     <script src="js/app.js"></script>
     <script src="js/settings.js"></script>
@@ -345,16 +334,18 @@
       <p style="margin: 0;">Programmatore: <strong>Petrux</strong></p>
       <p style="margin-top: 10px; text-align: center;">Un launcher web moderno ispirato a Symbaloo.<br>Per info e contatti: <a href="mailto:petrux@email.com">petrux@email.com</a></p>
     </div>
-  </div>
+      </div>
 </div>
 <script src="js/about-modal.js"></script>
+<script src="js/settings-sidebar-init.js"></script>
+
 </body>
   <!-- Hidden settings inputs for AppConfig compatibility -->
   <div id="hidden-settings-fields" style="display:none;">
     <input id="app-name" type="text" value="My Symbaloo">
     <input id="window-color" type="color" value="#a52a2a"> <!-- brown -->
     <input id="empty-tile-color" type="color" value="#800080"> <!-- purple -->
-    <input id="enable-background" type="checkbox">
+    <input id="enable-background" type="checkbox" checked>
     <input id="show-empty-tiles" type="checkbox" checked>
     <input id="transparency-slider" type="range" min="0" max="100" value="20">
     <input id="grid-columns" type="number" min="4" max="12" value="9">
