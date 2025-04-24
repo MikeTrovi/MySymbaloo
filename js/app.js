@@ -197,18 +197,29 @@ function handleSearch() {
 /**
  * Mostra/nasconde il pannello delle impostazioni
  */
-function toggleSettingsPanel() {
-    console.log('[DEBUG] toggleSettingsPanel called');
+function toggleSettingsPanel(force) {
+    console.log('[DEBUG] toggleSettingsPanel called', force);
     if (!AppConfig.dom.settingsPanel) {
         console.error('[DEBUG] settingsPanel element not found!');
         return;
     }
-    AppConfig.dom.settingsPanel.classList.toggle('active');
-    // Se chiudi il pannello, azzera la selezione tile
-    if (!AppConfig.dom.settingsPanel.classList.contains('active')) {
+    // Rimuovi evidenziazione da tutti i menu
+    document.querySelectorAll('.settings-menu-item.active').forEach(el => el.classList.remove('active'));
+    if (force === true) {
+        AppConfig.dom.settingsPanel.classList.add('active');
+    } else if (force === false) {
+        AppConfig.dom.settingsPanel.classList.remove('active');
         AppConfig.editingTile = null;
         if (typeof renderCurrentPage === 'function') {
             renderCurrentPage();
+        }
+    } else {
+        AppConfig.dom.settingsPanel.classList.toggle('active');
+        if (!AppConfig.dom.settingsPanel.classList.contains('active')) {
+            AppConfig.editingTile = null;
+            if (typeof renderCurrentPage === 'function') {
+                renderCurrentPage();
+            }
         }
     }
 }

@@ -5,6 +5,21 @@ document.addEventListener('DOMContentLoaded', function() {
   if (menuContainer && !window.settingsMenuHtml) {
     window.settingsMenuHtml = menuContainer.innerHTML;
   }
+  // [FIX] Collega il pulsante impostazioni alla funzione di apertura della sidebar
+  var settingsBtn = document.getElementById('settings-button');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('mousedown', function(event) {
+      event.stopPropagation();
+    });
+    settingsBtn.addEventListener('click', function(event) {
+      event.stopPropagation(); // Previene la chiusura immediata dal listener globale
+      if (typeof window.showSettingsMenuOnly === 'function') {
+        window.showSettingsMenuOnly();
+      } else if (typeof window.showSettingsMenu === 'function') {
+        window.showSettingsMenu();
+      }
+    });
+  }
 });
 const settingsPages = {
   "add-tiles": `
@@ -272,7 +287,7 @@ window.showSettingsPage = function(pageName) {
   }
   document.querySelectorAll('.settings-menu-item').forEach(btn => {
     if (btn.getAttribute('data-settings-page') === pageName) {
-      btn.classList.add('active');
+      // btn.classList.add('active'); // Disabilitato: non vogliamo più evidenziare
     } else {
       btn.classList.remove('active');
     }
@@ -426,9 +441,11 @@ document.querySelectorAll('.settings-menu-item').forEach(btn => {
 // All'avvio: mostra solo il menu, non caricare nessuna pagina
 const container = document.getElementById('settings-page-content');
 const sidebar = document.querySelector('.settings-sidebar');
-function showSettingsMenuOnly() {
+window.showSettingsMenuOnly = function showSettingsMenuOnly() {
   const container = document.getElementById('settings-page-content');
   const sidebar = document.querySelector('.settings-sidebar');
+  const panel = document.getElementById('settings-panel');
+  if (panel) panel.style.display = 'block';
   if (container && sidebar) {
     // Restore menu HTML if missing
     if (window.settingsMenuHtml && (!sidebar.innerHTML || sidebar.innerHTML.trim() === '')) {

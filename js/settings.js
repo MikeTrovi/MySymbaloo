@@ -148,7 +148,13 @@ function saveSettings() {
     applySettings();
     
     // Chiudi il pannello impostazioni
-    toggleSettingsPanel();
+    if (typeof window.toggleSettingsPanel === 'function') {
+        window.toggleSettingsPanel(false);
+    } else {
+        // Fallback: nascondi direttamente
+        const settingsPanel = document.getElementById('settings-panel');
+        if (settingsPanel) settingsPanel.style.display = 'none';
+    }
     
     // Ridisegna la griglia attuale
     renderCurrentPage();
@@ -202,6 +208,24 @@ window.initSettingsSidebarMenu = function initSettingsSidebarMenu() {
  * Aggiunge event listener per gli elementi del pannello impostazioni
  */
 function initSettingsEvents() {
+    // Listener per chiusura settings se si clicca fuori
+    document.addEventListener('click', function(event) {
+        const settingsPanel = document.getElementById('settings-panel');
+        const settingsButton = document.getElementById('settings-button');
+        // Se il pannello non è visibile, non fare nulla
+        if (!settingsPanel || settingsPanel.style.display === 'none') return;
+        // Se il click è dentro il pannello o sul pulsante di apertura, non fare nulla
+        if (settingsPanel.contains(event.target) || (settingsButton && settingsButton.contains(event.target))) {
+            return;
+        }
+        // Altrimenti chiudi il pannello
+        if (typeof window.toggleSettingsPanel === 'function') {
+            window.toggleSettingsPanel(false); // Assumiamo che false chiuda
+        } else {
+            // Fallback: nascondi direttamente
+            settingsPanel.style.display = 'none';
+        }
+    });
     // Aggiunge event listener per il cambio di impostazioni in tempo reale
     AppConfig.dom.settingsForm.appName.addEventListener('input', updateAppName);
     AppConfig.dom.settingsForm.windowColor.addEventListener('input', updateWindowColor);
