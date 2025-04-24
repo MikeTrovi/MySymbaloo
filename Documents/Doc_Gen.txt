@@ -1,0 +1,47 @@
+# Doc_Gen.txt
+
+## Documentazione Generale di MySymbaloo
+
+Questa documentazione fornisce una panoramica generale sul funzionamento, l'architettura e le caratteristiche principali dell'applicazione MySymbaloo.
+
+---
+
+### Cos'è MySymbaloo?
+MySymbaloo è un launcher web moderno che consente di organizzare, personalizzare e gestire una griglia di tiles (collegamenti rapidi), pagine e gruppi di tiles. L'applicazione è completamente client-side e salva i dati dell'utente direttamente nel browser tramite localStorage.
+
+---
+
+### Funzionalità Principali
+- Griglia di tiles personalizzabili (colore, dimensione, icona, link)
+- Supporto a pagine multiple e gruppi di tiles
+- Drag & Drop avanzato per riordinare i tiles
+- Pannello impostazioni dinamico e animato
+- Salvataggio/caricamento configurazione (JSON/XML)
+- Selettore motore di ricerca integrato nella barra di ricerca
+- Modal informativa sull'applicazione
+
+---
+
+### Struttura del Progetto
+- `index.html`: struttura principale della pagina e inclusione di JS/CSS
+- `/js`: logica applicativa suddivisa in moduli tematici
+- `/css`: fogli di stile modulari per componenti e layout
+- `/assets`: immagini, loghi, icone
+
+---
+
+### Architettura e Interazione
+L'applicazione è progettata per essere completamente client-side. Tutte le interazioni dell'utente (aggiunta/modifica/eliminazione di tiles, cambio pagina, impostazioni) avvengono tramite JavaScript, con aggiornamenti dinamici del DOM e salvataggio persistente dei dati tramite localStorage. L'interfaccia è pensata per essere intuitiva, reattiva e accessibile anche su dispositivi mobili.
+
+---
+
+### Approfondimenti
+Per dettagli tecnici su CSS, JS e HTML, consultare i file dedicati:
+- Doc_CSS.txt — documentazione sui fogli di stile
+- Doc_JS.txt — documentazione sui file JavaScript
+- Doc_HTML.txt — documentazione sulla struttura HTML
+
+---
+
+**Autore:** Petrux
+**Ultimo aggiornamento:** 25/04/2025

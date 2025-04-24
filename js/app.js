@@ -152,7 +152,7 @@ function initEvents() {
     });
     
     // Eventi della sidebar
-    if (AppConfig.dom.settingsButton) AppConfig.dom.settingsButton.addEventListener('click', toggleSettingsPanel);
+   // if (AppConfig.dom.settingsButton) AppConfig.dom.settingsButton.addEventListener('click', toggleSettingsPanel);
     if (AppConfig.dom.homeButton) AppConfig.dom.homeButton.addEventListener('click', () => switchPage('home'));
     if (AppConfig.dom.addPageButton) AppConfig.dom.addPageButton.addEventListener('click', showAddPageDialog);
     

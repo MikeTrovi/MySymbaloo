@@ -1,0 +1,102 @@
+# Doc_CSS.txt
+
+## Documentazione dei File CSS di MySymbaloo
+
+Questa sezione descrive in dettaglio il ruolo e il funzionamento dei principali file CSS del progetto.
+
+---
+
+### header.css
+- **Ruolo**: Gestisce lo stile dell'header, compresa la barra di ricerca e i pulsanti di navigazione rapida.
+- **Dettagli**:
+  - Utilizza Flexbox per l'allineamento degli elementi.
+  - Colori e font sono ereditati dalle variabili globali definite in style.css.
+  - Comprende regole per la responsività su mobile.
+- **Esempio di selettore**:
+    ```css
+    .header-search {
+      display: flex;
+      align-items: center;
+      background: var(--header-bg);
+    }
+    ```
+
+### sidebar.css
+- **Ruolo**: Definisce il layout e lo stile della sidebar, inclusi i bottoni delle pagine e le transizioni di apertura/chiusura.
+- **Dettagli**:
+  - Sidebar fissa a sinistra, con animazioni su hover e click.
+  - Bottoni circolari con effetto ripple.
+- **Esempio**:
+    ```css
+    .sidebar {
+      width: 60px;
+      transition: width 0.3s;
+    }
+    .sidebar.open {
+      width: 200px;
+    }
+    ```
+
+### tiles.css
+- **Ruolo**: Gestisce la griglia e lo stile dei singoli tile, inclusi gruppi e anteprime.
+- **Dettagli**:
+  - Griglia responsive con CSS Grid.
+  - Colori e ombre personalizzabili per ogni tile.
+- **Esempio**:
+    ```css
+    .tile {
+      background: var(--tile-bg);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    ```
+
+### settings.css
+- **Ruolo**: Stile per il pannello impostazioni, sidebar e animazioni di transizione.
+- **Dettagli**:
+  - Animazioni su apertura/chiusura pannello tramite proprietà `transform` e `opacity`.
+  - Layout flessibile per le varie pagine impostazioni.
+- **Esempio**:
+    ```css
+    .settings-panel {
+      transition: transform 0.4s, opacity 0.2s;
+    }
+    .settings-panel.active {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    ```
+
+### modals.css
+- **Ruolo**: Gestisce lo stile delle finestre modali (about, gruppi, ecc.).
+- **Dettagli**:
+  - Overlay semitrasparente, centratura verticale e orizzontale.
+  - Effetti di transizione per apertura/chiusura.
+- **Esempio**:
+    ```css
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+    ```
+
+### style.css
+- **Ruolo**: Stile generale, variabili CSS, reset di base.
+- **Dettagli**:
+  - Definisce palette colori, font, spaziature e reset universale.
+  - Variabili CSS per personalizzazione rapida di temi e layout.
+- **Esempio**:
+    ```css
+    :root {
+      --main-bg: #f4f6fa;
+      --header-bg: #1e293b;
+      --tile-bg: #fff;
+    }
+    ```
+
+---
+
+**Nota**: Ogni file CSS è commentato con spiegazioni pratiche per facilitare la manutenzione e l'estensione dello stile.
+
+Per dettagli su HTML e JS, consultare i file Doc_HTML.txt e Doc_JS.txt.

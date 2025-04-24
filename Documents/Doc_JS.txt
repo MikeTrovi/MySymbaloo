@@ -1,0 +1,150 @@
+# Doc_JS.txt
+
+## Documentazione dettagliata dei file JavaScript di MySymbaloo
+
+Questa sezione descrive in dettaglio il ruolo, le funzioni, le strutture dati, gli esempi e le interazioni dei principali file JS del progetto.
+
+---
+
+### app.js
+- **Ruolo**: Logica principale dell'applicazione. Gestisce l'inizializzazione, cambio pagina, cache DOM e coordinazione tra componenti.
+- **Strutture dati**: Oggetto globale `AppConfig` con impostazioni, pagine, stato corrente e cache degli elementi DOM.
+- **Funzioni chiave**:
+    - `initApp()`: Inizializza l'applicazione (cache DOM, carica dati, applica impostazioni, eventi).
+    - `cacheDOM()`: Salva riferimenti ai principali elementi DOM.
+    - `switchPage(pageId)`: Cambia pagina, aggiorna titolo e sidebar.
+    - `renderPageButtons()`: Crea dinamicamente i bottoni delle pagine.
+- **Esempio**:
+    ```js
+    document.addEventListener('DOMContentLoaded', initApp);
+    ```
+- **Interazione**: Chiama funzioni di settings.js, tiles.js, storage.js. Tutte le modifiche di stato passano da qui.
+- **Note**: Ogni funzione principale è preceduta da commento descrittivo. Debug con `console.log`.
+
+---
+
+### settings.js
+- **Ruolo**: Gestione delle impostazioni dell'applicazione (caricamento, salvataggio, applicazione preferenze utente).
+- **Strutture dati**: Le impostazioni sono salvate in `AppConfig.settings` e in localStorage (chiave `settings`).
+- **Funzioni chiave**:
+    - `loadAppData()`: Carica impostazioni e pagine.
+    - `applySettings()`: Applica le impostazioni correnti.
+    - `saveSettings()`: Salva le impostazioni modificate.
+- **Esempio**:
+    ```js
+    AppConfig.dom.settingsForm.appName.addEventListener('input', updateAppName);
+    ```
+- **Interazione**: Lavora a stretto contatto con app.js e settings-sidebar-init.js.
+
+---
+
+### settings-sidebar-init.js
+- **Ruolo**: Gestione UI della sidebar delle impostazioni, transizioni animate, caricamento dinamico delle pagine impostazioni.
+- **Strutture dati**: Oggetto `settingsPages` con template HTML per ogni pagina impostazioni.
+- **Funzioni chiave**:
+    - `showSettingsPage(pageName)`: Carica la pagina richiesta, avvia animazioni.
+    - `showSettingsMenu()`: Torna al menu principale delle impostazioni.
+- **Esempio**:
+    ```js
+    window.showSettingsPage('background');
+    ```
+- **Debug**: Log dettagliati con `console.debug` e gestione fallback.
+
+---
+
+### tiles.js
+- **Ruolo**: Gestione completa dei tiles (creazione, modifica, eliminazione, visualizzazione, gruppi).
+- **Strutture dati**: Ogni pagina ha un array di `tiles`, ogni tile ha proprietà come `id`, `type`, `x`, `y`, `width`, `height`, `title`, `url`, `icon`, ecc.
+- **Funzioni chiave**:
+    - `renderCurrentPage()`: Renderizza la griglia dei tile.
+    - `renderTile(tile)`: Crea e inserisce un elemento DOM per ogni tile.
+    - `deleteTile(tileId)`: Elimina un tile dalla pagina.
+- **Esempio**:
+    ```js
+    saveTileEdit();
+    deleteTile('tile_123');
+    ```
+- **Interazione**: Usa AppConfig, storage.js, drag-drop.js, tile-ui-enhancements.js.
+
+---
+
+### tile-ui-enhancements.js
+- **Ruolo**: Miglioramenti UI per la modifica delle dimensioni e anteprima dei tile.
+- **Funzioni chiave**:
+    - `adjustTileWidth(change)`, `adjustTileHeight(change)`: Modificano i valori dei campi e aggiornano l'anteprima.
+    - `updateTilePreview()`: Aggiorna la visualizzazione del tile nel form di modifica.
+- **Esempio**:
+    ```js
+    adjustTileWidth(1);
+    ```
+- **Interazione**: Si integra col form di modifica tile.
+
+---
+
+### drag-drop.js
+- **Ruolo**: Gestione avanzata del drag & drop dei tile nella griglia.
+- **Strutture dati**: Oggetto `DragDropConfig` che mantiene lo stato del drag corrente.
+- **Funzioni chiave**:
+    - `initDragDrop()`: Inizializza il sistema di drag&drop.
+    - `enableDragForTile(tileElement)`: Attiva il drag su un singolo tile.
+- **Esempio**:
+    ```js
+    enableDragForTile(document.getElementById('tile_123'));
+    ```
+- **Debug**: Log dettagliati per tracciare errori di posizione e stato.
+
+---
+
+### storage.js
+- **Ruolo**: Gestione della persistenza dati tramite localStorage.
+- **Funzioni chiave**:
+    - `saveToStorage(key, data)`: Salva un oggetto/array in localStorage.
+    - `loadFromStorage(key)`: Recupera dati da localStorage.
+- **Esempio**:
+    ```js
+    saveToStorage('pages', [ ... ]);
+    const settings = loadFromStorage('settings');
+    ```
+- **Interazione**: Usato da tutti i moduli che necessitano di salvataggio/caricamento dati.
+
+---
+
+### save-config.js
+- **Ruolo**: Esportazione e importazione della configurazione in formato XML.
+- **Funzioni chiave**:
+    - `saveConfigAsXML()`: Esporta le impostazioni e le pagine in XML.
+- **Esempio**:
+    ```js
+    saveConfigAsXML();
+    ```
+- **Interazione**: Usa AppConfig, storage.js, manipola localStorage.
+
+---
+
+### about-modal.js
+- **Ruolo**: Gestione dell'apertura/chiusura della finestra informativa sull'app.
+- **Funzioni chiave**:
+    - `openAboutModal()`: Mostra la modale con animazione e focus.
+    - `closeAboutModal()`: Nasconde la modale con animazione.
+- **Esempio**:
+    ```js
+    openAboutModal();
+    ```
+- **Interazione**: Collegato al logo e alla modale in index.html.
+
+---
+
+### search-engine-selector.js
+- **Ruolo**: Gestione del selettore motore di ricerca per la search bar.
+- **Strutture dati**: Array `ENGINES` con nome, logo e URL di ricerca dei principali motori.
+- **Funzioni chiave**:
+    - Gestione click su selettore, apertura popup dinamico, selezione motore, salvataggio in localStorage.
+- **Esempio**:
+    ```js
+    currentEngine = ENGINES[2];
+    ```
+- **Interazione**: Aggiorna DOM, usa localStorage per persistenza preferenza.
+
+---
+
+**Nota**: Ogni file JS è ampiamente commentato per facilitare la manutenzione. Per dettagli su CSS e HTML, consultare Doc_CSS.txt e Doc_HTML.txt.

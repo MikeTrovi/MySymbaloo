@@ -187,22 +187,8 @@ function showBackgroundSelection() {
 /**
  * Gestione menu sidebar impostazioni
  */
-window.initSettingsSidebarMenu = function initSettingsSidebarMenu() {
-  const menuItems = document.querySelectorAll('.settings-menu-item');
-  const pages = document.querySelectorAll('.settings-page');
-  menuItems.forEach(btn => {
-    // Rimuovi tutti i listener precedenti clonando il nodo
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-    newBtn.addEventListener('click', function() {
-      const page = this.getAttribute('data-settings-page');
-      console.debug('[DEBUG] Click menu item:', page, this);
-      if (typeof window.showSettingsPage === 'function') {
-        window.showSettingsPage(page);
-      }
-    });
-  });
-}
+// Funzione rimossa: ora la logica dei listener menu è in window.attachSettingsMenuListeners (settings-sidebar-init.js)
+// Se altri file la usano, chiamare invece window.attachSettingsMenuListeners.
 
 /**
  * Aggiunge event listener per gli elementi del pannello impostazioni

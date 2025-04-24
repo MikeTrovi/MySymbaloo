@@ -12,11 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
       event.stopPropagation();
     });
     settingsBtn.addEventListener('click', function(event) {
-      event.stopPropagation(); // Previene la chiusura immediata dal listener globale
-      if (typeof window.showSettingsMenuOnly === 'function') {
-        window.showSettingsMenuOnly();
-      } else if (typeof window.showSettingsMenu === 'function') {
-        window.showSettingsMenu();
+      event.stopPropagation();
+      const panel = document.getElementById('settings-panel');
+      const isOpen = panel && panel.classList.contains('active') && panel.style.display !== 'none';
+      if (isOpen) {
+        window.toggleSettingsPanel(false);
+      } else {
+        window.toggleSettingsPanel(true);
       }
     });
   }
@@ -241,7 +243,7 @@ window.showSettingsPage = function(pageName) {
       void oldPage.offsetWidth;
       oldPage.style.transition = 'transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s';
       newPage.style.transition = 'transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s';
-      oldPage.style.transform = 'translateX(100%)'; // menu pushed right
+      oldPage.style.transform = 'translateX(-100%)'; // menu pushed left (uscita a sinistra)
       newPage.style.transform = 'translateX(0)';    // page enters from left
       
       let finished = 0;
@@ -250,6 +252,8 @@ window.showSettingsPage = function(pageName) {
         if (finished === 2) {
           container.innerHTML = settingsPages[pageName];
           container.classList.remove('slide-in', 'slide-out');
+          container.style.transform = '';
+          container.style.opacity = '';
           if (oldPage.parentNode) oldPage.parentNode.removeChild(oldPage);
           if (newPage.parentNode) newPage.parentNode.removeChild(newPage);
         }
@@ -271,17 +275,24 @@ window.showSettingsPage = function(pageName) {
       container.innerHTML = settingsPages[pageName];
       container.classList.remove('slide-in', 'slide-out');
       container.style.display = 'block';
-      container.style.transform = 'translateX(100%)';
-      container.style.opacity = '0';
+      // NON impostare transform o opacity inline, lascia che sia il CSS a gestire tutto
+      // Forza reflow per assicurare che la transizione parta
       void container.offsetWidth;
       container.classList.add('slide-in');
-      container.style.transform = '';
-      container.style.opacity = '';
-      sidebar.style.display = 'none';
+      setTimeout(() => { sidebar.style.display = 'none'; }, 400); // Nascondi dopo la transizione
     }
   } else {
-    container.innerHTML = '';
-    container.style.display = 'none';
+    // Se il menu HTML iniziale è disponibile, ripristina il menu
+    if (window.settingsMenuHtml) {
+      container.innerHTML = window.settingsMenuHtml;
+      container.style.display = 'block';
+      if (typeof window.attachSettingsMenuListeners === 'function') {
+        window.attachSettingsMenuListeners();
+      }
+    } else {
+      container.innerHTML = '';
+      container.style.display = 'none';
+    }
     container.classList.remove('slide-in', 'slide-out');
     sidebar.style.display = 'block';
   }
@@ -332,8 +343,19 @@ window.showSettingsMenu = function() {
     function cleanup() {
       finished++;
       if (finished === 2) {
-        container.innerHTML = '';
-        container.style.display = 'none';
+        if (window.settingsMenuHtml) {
+          container.innerHTML = window.settingsMenuHtml;
+          container.style.display = 'block';
+          if (typeof window.attachSettingsMenuListeners === 'function') {
+            window.attachSettingsMenuListeners();
+          }
+        } else {
+          container.innerHTML = '';
+          container.style.display = 'none';
+        }
+        container.classList.remove('slide-in', 'slide-out');
+        container.style.transform = '';
+        container.style.opacity = '';
         sidebar.style.display = 'block';
         if (oldPage.parentNode) oldPage.parentNode.removeChild(oldPage);
         if (newPage.parentNode) newPage.parentNode.removeChild(newPage);
@@ -357,7 +379,11 @@ window.showSettingsMenu = function() {
       if (finished < 2) {
         container.innerHTML = '';
         container.style.display = 'none';
+        container.classList.remove('slide-in', 'slide-out');
+        container.style.transform = '';
+        container.style.opacity = '';
         sidebar.style.display = 'block';
+        // NON svuotare mai la sidebar qui!
         if (oldPage.parentNode) oldPage.parentNode.removeChild(oldPage);
         if (newPage.parentNode) newPage.parentNode.removeChild(newPage);
         console.debug('[DEBUG] Menu transition fallback cleanup');
@@ -377,7 +403,9 @@ window.showSettingsMenu = function() {
       finished++;
       if (finished === 2) {
         container.style.display = 'none';
-        container.classList.remove('slide-out');
+        container.classList.remove('slide-in', 'slide-out');
+        container.style.transform = '';
+        container.style.opacity = '';
         sidebar.classList.remove('slide-in');
         console.debug('[DEBUG] Simple menu transition complete');
       }
@@ -398,8 +426,11 @@ window.showSettingsMenu = function() {
     setTimeout(() => {
       if (finished < 2) {
         container.style.display = 'none';
-        container.classList.remove('slide-out');
+        container.classList.remove('slide-in', 'slide-out');
+        container.style.transform = '';
+        container.style.opacity = '';
         sidebar.classList.remove('slide-in');
+        // NON svuotare mai la sidebar qui!
         console.debug('[DEBUG] Simple menu transition fallback cleanup');
       }
     }, 600);
@@ -407,81 +438,176 @@ window.showSettingsMenu = function() {
 };
 
 
-document.querySelectorAll('.settings-menu-item').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const page = this.getAttribute('data-settings-page');
-    if (!page) return;
-    const sidebar = document.querySelector('.settings-sidebar');
-    const container = document.getElementById('settings-page-content');
-    // Start slide-out of sidebar
-    sidebar.classList.add('slide-out');
-    sidebar.addEventListener('transitionend', function handler(e) {
-      if (e.propertyName === 'transform' || e.propertyName === 'left') {
-        sidebar.style.display = 'none';
-        sidebar.classList.remove('slide-out');
-        // Show settings page with slide-in
-        showSettingsPage(page);
-        container.classList.add('slide-in');
-        container.style.display = 'block';
-        sidebar.removeEventListener('transitionend', handler);
-      }
+// Funzione pubblica per attaccare i listener animati alle voci menu
+window.attachSettingsMenuListeners = function attachSettingsMenuListeners() {
+  document.querySelectorAll('.settings-menu-item').forEach(btn => {
+    // Rimuovi eventuali vecchi listener clonando il nodo
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', function() {
+      const page = this.getAttribute('data-settings-page');
+      if (!page) return;
+      const sidebar = document.querySelector('.settings-sidebar');
+      const container = document.getElementById('settings-page-content');
+      // Sidebar esce a destra (slide-out)
+      sidebar.classList.remove('slide-in');
+      sidebar.classList.add('slide-out');
+      sidebar.style.display = 'block';
+      // Pagina entra da sinistra (slide-in)
+      container.classList.remove('slide-out');
+      container.classList.add('slide-in');
+      container.style.display = 'block';
+      // Nascondi sidebar dopo la transizione
+      sidebar.addEventListener('transitionend', function handler(e) {
+        if (e.propertyName === 'transform') {
+          sidebar.style.display = 'none';
+          sidebar.removeEventListener('transitionend', handler);
+        }
+      });
+      // Mostra la pagina richiesta
+      showSettingsPage(page);
     });
-    // Fallback in case transitionend doesn't fire
-    setTimeout(() => {
-      if (sidebar.style.display !== 'none') {
-        sidebar.style.display = 'none';
-        sidebar.classList.remove('slide-out');
-        showSettingsPage(page);
-        container.classList.add('slide-in');
-        container.style.display = 'block';
-      }
-    }, 400);
   });
-});
-// All'avvio: mostra solo il menu, non caricare nessuna pagina
-const container = document.getElementById('settings-page-content');
-const sidebar = document.querySelector('.settings-sidebar');
+};
+// Attacca subito i listener all'avvio
+window.attachSettingsMenuListeners();
+
+
+
+// Torna al menu principale (sidebar rientra, pagina esce)
 window.showSettingsMenuOnly = function showSettingsMenuOnly() {
+  console.log("DEBUG: sono in showSettingsMenuOnly");
   const container = document.getElementById('settings-page-content');
   const sidebar = document.querySelector('.settings-sidebar');
   const panel = document.getElementById('settings-panel');
-  if (panel) panel.style.display = 'block';
-  if (container && sidebar) {
-    // Restore menu HTML if missing
-    if (window.settingsMenuHtml && (!sidebar.innerHTML || sidebar.innerHTML.trim() === '')) {
-      sidebar.innerHTML = window.settingsMenuHtml;
-    }
-    // Reset sidebar classes
-    sidebar.classList.remove('slide-out', 'slide-in');
-    sidebar.style.display = 'block';
-    // Hide and clear page content
-    container.style.display = 'none';
-    container.classList.remove('slide-in', 'slide-out');
-    container.innerHTML = '';
-    // Remove active state from all menu items
-    sidebar.querySelectorAll('.settings-menu-item').forEach(btn => btn.classList.remove('active'));
-    // Re-attach menu event listeners
-    if (typeof window.initSettingsSidebarMenu === 'function') {
-      console.log('[DEBUG] Calling initSettingsSidebarMenu after restoring menu HTML');
-      window.initSettingsSidebarMenu();
-    }
+  if (panel) {
+    panel.style.display = 'block';
+    panel.classList.remove('slide-in', 'slide-out');
+    requestAnimationFrame(() => {
+      panel.classList.add('slide-in');
+    });
+    panel.classList.add('active'); // Assicura che il pannello sia visibile
   }
-}
-showSettingsMenuOnly();
-
-// Monkey patch per ripristinare il menu quando si apre il pannello impostazioni
-if (typeof window.toggleSettingsPanel === 'function') {
-  const origToggleSettingsPanel = window.toggleSettingsPanel;
-  window.toggleSettingsPanel = function(...args) {
-  const wasActive = AppConfig.dom.settingsPanel && AppConfig.dom.settingsPanel.classList.contains('active');
-  origToggleSettingsPanel.apply(this, args);
-  const isActive = AppConfig.dom.settingsPanel && AppConfig.dom.settingsPanel.classList.contains('active');
-  if (!wasActive && isActive) {
-    // Always restore menu state and sidebar
-    showSettingsMenuOnly();
+  if (container && sidebar) {
+    // DEBUG: Log sidebar HTML before showing
+    console.log('SIDEBAR HTML prima:', sidebar.innerHTML);
+    // Solo display block, tutto il resto lo fa il CSS
+    sidebar.style.display = 'block';
+    sidebar.classList.remove('slide-out', 'slide-in');
+    requestAnimationFrame(() => {
+      sidebar.classList.add('slide-in');
+    });
+    // Nascondi e resetta il contenuto della pagina impostazioni
+    // --- ANIMAZIONE: pagina -> menu (simmetrica) ---
+    if (container && container.style.display === 'block' && container.innerHTML.trim() !== '' && window.settingsMenuHtml) {
+      const oldPage = document.createElement('div');
+      oldPage.className = container.className;
+      oldPage.style.cssText = container.style.cssText + ';position:absolute;top:0;left:0;width:100%;height:100%;z-index:1110;pointer-events:none;';
+      oldPage.innerHTML = container.innerHTML;
+      oldPage.style.transform = 'translateX(0)';
+      oldPage.style.opacity = '1';
+      const newMenu = document.createElement('div');
+      newMenu.className = container.className;
+      newMenu.style.cssText = container.style.cssText + ';position:absolute;top:0;left:0;width:100%;height:100%;z-index:1111;pointer-events:none;';
+      newMenu.innerHTML = window.settingsMenuHtml;
+      newMenu.style.transform = 'translateX(100%)';
+      newMenu.style.opacity = '1';
+      container.parentNode.appendChild(oldPage);
+      container.parentNode.appendChild(newMenu);
+      void oldPage.offsetWidth;
+      oldPage.style.transition = 'transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s';
+      newMenu.style.transition = 'transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s';
+      oldPage.style.transform = 'translateX(-100%)'; // pagina esce a sinistra
+      newMenu.style.transform = 'translateX(0)';    // menu entra da destra
+      let finished = 0;
+      function cleanup() {
+        finished++;
+        if (finished === 2) {
+          container.innerHTML = window.settingsMenuHtml;
+          container.style.display = 'block';
+          container.classList.remove('slide-in', 'slide-out');
+          container.style.transform = '';
+          container.style.opacity = '';
+          if (typeof window.attachSettingsMenuListeners === 'function') {
+            window.attachSettingsMenuListeners();
+          }
+          if (oldPage.parentNode) oldPage.parentNode.removeChild(oldPage);
+          if (newMenu.parentNode) newMenu.parentNode.removeChild(newMenu);
+        }
+      }
+      oldPage.addEventListener('transitionend', function handler(e) {
+        if (e.propertyName === 'transform') {
+          cleanup();
+          oldPage.removeEventListener('transitionend', handler);
+        }
+      });
+      newMenu.addEventListener('transitionend', function handler2(e) {
+        if (e.propertyName === 'transform') {
+          cleanup();
+          newMenu.removeEventListener('transitionend', handler2);
+        }
+      });
+      // Fallback
+      setTimeout(() => {
+        if (finished < 2) {
+          container.innerHTML = window.settingsMenuHtml;
+          container.style.display = 'block';
+          container.classList.remove('slide-in', 'slide-out');
+          container.style.transform = '';
+          container.style.opacity = '';
+          if (typeof window.attachSettingsMenuListeners === 'function') {
+            window.attachSettingsMenuListeners();
+          }
+          if (oldPage.parentNode) oldPage.parentNode.removeChild(oldPage);
+          if (newMenu.parentNode) newMenu.parentNode.removeChild(newMenu);
+        }
+      }, 600);
+    } else {
+      // fallback: nessuna pagina visibile
+      container.classList.remove('slide-in', 'slide-out');
+      if (window.settingsMenuHtml) {
+        container.innerHTML = window.settingsMenuHtml;
+        container.style.display = 'block';
+        if (typeof window.attachSettingsMenuListeners === 'function') {
+          window.attachSettingsMenuListeners();
+        }
+      }
+    }
+    // DEBUG: Log sidebar HTML after showing
+    console.log('SIDEBAR HTML dopo:', sidebar.innerHTML);
   }
 };
-  };
+
+
+
+// Gestione apertura/chiusura del pannello impostazioni
+window.toggleSettingsPanel = function(open) {
+  const panel = document.getElementById('settings-panel');
+  if (!panel) return;
+  if (open === false) {
+    panel.classList.remove('active');
+    panel.style.display = 'none';
+  } else {
+    panel.style.display = 'block';
+    panel.classList.add('active');
+    // Se il contenuto è vuoto o bianco, ripristina il menu iniziale
+    const container = document.getElementById('settings-page-content');
+    if (container && (!container.innerHTML.trim() || container.innerHTML.trim() === '' || container.style.display === 'none')) {
+      if (window.settingsMenuHtml) {
+        container.innerHTML = window.settingsMenuHtml;
+        container.style.display = 'block';
+        if (typeof window.attachSettingsMenuListeners === 'function') {
+          window.attachSettingsMenuListeners();
+        }
+      }
+    }
+    // Mostra il menu principale
+    if (typeof window.showSettingsMenuOnly === 'function') {
+      window.showSettingsMenuOnly();
+    }
+  }
+};
+
 
 
 // --- BACKGROUND SETTINGS LOGIC ---

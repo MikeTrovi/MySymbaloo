@@ -1,0 +1,125 @@
+# Documentazione Funzionale del Progetto "My Symbaloo"
+
+## Indice
+1. [Panoramica Generale](#panoramica-generale)
+2. [Struttura dei File](#struttura-dei-file)
+3. [Funzionalità Principali](#funzionalita-principali)
+4. [Descrizione dei File JavaScript](#descrizione-dei-file-javascript)
+5. [Gestione CSS](#gestione-css)
+6. [Gestione delle Risorse](#gestione-delle-risorse)
+7. [Note e Suggerimenti per la Manutenzione](#note-e-suggerimenti-per-la-manutenzione)
+
+---
+
+## Panoramica Generale
+
+"My Symbaloo" è un launcher web moderno ispirato a Symbaloo, che permette di organizzare e personalizzare una griglia di tiles (collegamenti rapidi), pagine, gruppi di tiles e impostazioni grafiche. L'applicazione è completamente client-side e salva i dati tramite `localStorage`.
+
+---
+
+## Struttura dei File
+
+- **index.html**: Punto di ingresso principale dell'applicazione. Definisce la struttura della pagina, include tutti gli script JS e i CSS.
+- **css/**: Contiene i fogli di stile modulari per header, sidebar, tiles, impostazioni, modali, ecc.
+- **js/**: Tutta la logica dell'applicazione, suddivisa in moduli tematici.
+- **assets/**: Immagini, loghi, icone dei motori di ricerca.
+
+---
+
+## Funzionalità Principali
+
+- Gestione di una griglia di tiles personalizzabili (colore, dimensione, icona, link).
+- Supporto a pagine multiple e gruppi di tiles.
+- Drag & Drop avanzato per riordinare i tiles.
+- Pannello impostazioni animato e dinamico.
+- Salvataggio e caricamento configurazione (JSON/XML).
+- Selettore motore di ricerca integrato nella barra di ricerca.
+- Modal informativa sull'applicazione.
+
+---
+
+## Descrizione dei File JavaScript
+
+### app.js
+- **Ruolo**: Logica principale dell'applicazione. Gestisce l'inizializzazione, il cambio pagina, la cache degli elementi DOM e la coordinazione tra componenti.
+- **Funzioni chiave**: `initApp`, `cacheDOM`, `initEvents`, `switchPage`, `renderPageButtons`, apertura/chiusura pannelli.
+- **Interazione**: Chiama funzioni di settings, tiles, storage. Si integra con la struttura DOM di index.html.
+
+### settings.js
+- **Ruolo**: Gestione delle impostazioni dell'applicazione (caricamento, salvataggio, applicazione preferenze utente).
+- **Funzioni chiave**: `loadAppData`, `applySettings`, `saveSettings`, `updateSettingsInterface`, ascoltatori per cambiamenti in tempo reale.
+- **Interazione**: Lavora con app.js e settings-sidebar-init.js.
+
+### settings-sidebar-init.js
+- **Ruolo**: Gestione UI della sidebar delle impostazioni, transizioni animate, caricamento dinamico delle pagine impostazioni.
+- **Funzioni chiave**: `showSettingsPage`, `showSettingsMenu`, `attachSettingsMenuListeners`, gestione preview sfondo.
+- **Interazione**: Usa funzioni globali, manipola DOM, log di debug.
+
+### tiles.js
+- **Ruolo**: Gestione completa dei tiles (creazione, modifica, eliminazione, visualizzazione, gruppi).
+- **Funzioni chiave**: `renderCurrentPage`, `renderTile`, `deleteTile`, `populateTileEditForm`, `saveTileEdit`, gestione gruppi di tile.
+- **Interazione**: Usa AppConfig, storage.js, drag-drop.js, tile-ui-enhancements.js.
+
+### tile-ui-enhancements.js
+- **Ruolo**: Miglioramenti UI per la modifica delle dimensioni e anteprima dei tile.
+- **Funzioni chiave**: `adjustTileWidth`, `adjustTileHeight`, `updateTilePreview`, gestione pulsanti di decremento.
+- **Interazione**: Si integra con il form di modifica tile.
+
+### drag-drop.js
+- **Ruolo**: Gestione avanzata del drag & drop dei tile nella griglia.
+- **Funzioni chiave**: `initDragDrop`, `enableDragForTile`, `handleDragStart`, `handleDragMove`, `handleDragEnd`, `updateTilePosition`.
+- **Interazione**: Aggiorna la posizione dei tile e la persistenza dei dati.
+
+### storage.js
+- **Ruolo**: Gestione della persistenza dati tramite localStorage (salva, carica, rimuove, esporta/importa dati).
+- **Funzioni chiave**: `saveToStorage`, `loadFromStorage`, `removeFromStorage`, `clearAllStorage`, `exportData`, `importData`.
+- **Interazione**: Usato da tutti i moduli che necessitano di salvataggio/caricamento dati.
+
+### save-config.js
+- **Ruolo**: Esportazione e importazione della configurazione in formato XML.
+- **Funzioni chiave**: `saveConfigAsXML`, parsing XML, listener per pulsanti di salvataggio/caricamento.
+- **Interazione**: Usa AppConfig, storage.js, manipola localStorage.
+
+### about-modal.js
+- **Ruolo**: Gestione dell'apertura/chiusura della finestra informativa sull'app.
+- **Funzioni chiave**: `openAboutModal`, `closeAboutModal`, gestione accessibilità.
+- **Interazione**: Collegato al logo e alla modale in index.html.
+
+### search-engine-selector.js
+- **Ruolo**: Gestione del selettore motore di ricerca per la search bar.
+- **Funzioni chiave**: Selezione dinamica, salvataggio preferenza, apertura popup, ricerca con motore scelto.
+- **Interazione**: Aggiorna DOM, usa localStorage.
+
+---
+
+## Gestione CSS
+
+- **header.css**: Stile per l'header e la barra di ricerca.
+- **sidebar.css**: Stile e layout della sidebar, bottoni di navigazione e pagine.
+- **tiles.css**: Stile per la griglia e i singoli tile, inclusi gruppi e anteprime.
+- **settings.css**: Stile per il pannello impostazioni, sidebar e animazioni di transizione.
+- **modals.css**: Stile per le finestre modali (about, gruppi, ecc.).
+- **style.css**: Stile generale, variabili CSS, reset di base.
+
+---
+
+## Gestione delle Risorse
+
+- **assets/logo/**: Logo principale dell'applicazione.
+- **assets/search-logos/**: Icone dei motori di ricerca per la barra di ricerca.
+
+---
+
+## Note e Suggerimenti per la Manutenzione
+
+- I commenti nei file JS spiegano la logica delle funzioni principali e i punti critici (transizioni, drag&drop, salvataggio dati).
+- Per aggiungere nuove funzionalità, seguire la suddivisione modulare dei file.
+- Per modifiche grafiche, intervenire sui CSS specifici del componente.
+- Per debug avanzato, abilitare i log di debug già presenti in alcune funzioni.
+- Eventuali bug legati alle transizioni del pannello impostazioni sono spesso dovuti a una gestione errata dell'HTML o dei listener: assicurarsi che il menu venga sempre ripristinato e i listener riattaccati dopo ogni transizione.
+
+---
+
+**Autore:** Petrux
+**Ultimo aggiornamento:** 25/04/2025
+

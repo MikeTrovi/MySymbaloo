@@ -1,0 +1,49 @@
+# Doc_HTML.txt
+
+## Documentazione del file HTML principale (index.html)
+
+Questa sezione descrive la struttura e il funzionamento del file HTML principale del progetto MySymbaloo.
+
+---
+
+### index.html
+- **Ruolo**: Punto di ingresso dell'applicazione. Definisce la struttura della pagina, include tutti gli script JS e i CSS necessari.
+
+- **Struttura principale**:
+    - `<header>`: Contiene il logo, la barra di ricerca e i pulsanti rapidi.
+    - `<aside class="sidebar">`: Sidebar di navigazione con bottoni per cambiare pagina.
+    - `<main>`: Area centrale dove viene visualizzata la griglia dei tiles.
+    - `<div id="settings-panel">`: Pannello laterale per le impostazioni, caricato dinamicamente.
+    - `<div id="about-modal">`: Modale informativa sull'applicazione.
+
+- **Integrazione JS/CSS**:
+    - Tutti i file JS sono inclusi in fondo al body per ottimizzare il caricamento.
+    - I CSS sono modulari e importati nell'head.
+
+- **Esempio di struttura**:
+    ```html
+    <header>
+      <img src="assets/logo/logo.png" alt="Logo" />
+      <input type="search" id="search-bar" />
+    </header>
+    <aside class="sidebar">
+      <!-- Bottoni pagine -->
+    </aside>
+    <main>
+      <div class="tiles-grid"></div>
+    </main>
+    <div id="settings-panel"></div>
+    <div id="about-modal"></div>
+    ```
+
+- **Note di accessibilità**:
+    - Tutti i pulsanti hanno attributi aria-label.
+    - La modale about è navigabile da tastiera.
+
+- **Dinamismo**:
+    - Alcune sezioni (settings, modali, gruppi) sono popolate/modificate dinamicamente via JS.
+    - La struttura è pensata per essere responsive e accessibile anche su mobile.
+
+---
+
+**Nota**: Per approfondimenti su JS e CSS, consultare Doc_JS.txt e Doc_CSS.txt.
