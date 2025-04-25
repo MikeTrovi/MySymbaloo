@@ -50,7 +50,7 @@
   border-radius: 0 15px 15px 0;
   opacity: 0.95;
   box-shadow: 2px 0 16px rgba(0,0,0,0.13);
-  z-index: 1000;
+  z-index: 100;
   display: flex;
   flex-direction: row;
   transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.25s linear;
@@ -121,6 +121,7 @@
   max-width: 100% !important;
   min-width: 0 !important;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 .settings-menu-section {
   font-size: 1.07em;
@@ -134,10 +135,6 @@
   justify-content: center;
   text-align: center;
   padding: 0;
-}
-.settings-menu-item {
-  display: flex;
-  align-items: flex-start;
 }
 
 #settings-page-content {
@@ -252,7 +249,7 @@
   min-width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box;
-  padding: 11px 0 11px 20px;
+  padding: 11px 10px 11px 20px;
   margin: 0;
   cursor: pointer;
   border-radius: 10px 0 0 10px;
@@ -275,7 +272,7 @@
   color: #1976d2;
   font-size: 1.2em;
   font-weight: bold;
-  padding-right: 12px;
+  padding-right: 20px;
   z-index: 10;
   pointer-events: none;
 }

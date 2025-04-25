@@ -583,15 +583,37 @@ window.showSettingsMenuOnly = function showSettingsMenuOnly() {
 // Gestione apertura/chiusura del pannello impostazioni
 window.toggleSettingsPanel = function(open) {
   const panel = document.getElementById('settings-panel');
+  const container = document.getElementById('settings-page-content');
   if (!panel) return;
+
   if (open === false) {
-    panel.classList.remove('active');
-    panel.style.display = 'none';
+    // ANIMAZIONE DI CHIUSURA
+    panel.classList.remove('slide-in');
+    panel.classList.add('slide-out');
+    // Rimuovi active solo dopo la transizione
+    const handleTransitionEnd = function(e) {
+      if (e.propertyName === 'transform') {
+        panel.removeEventListener('transitionend', handleTransitionEnd);
+        panel.classList.remove('active', 'slide-out');
+        panel.style.display = 'none';
+        // Ripristina il menu nel contenitore
+        if (container && window.settingsMenuHtml) {
+          container.innerHTML = window.settingsMenuHtml;
+          container.style.display = 'none'; // Nascondi il contenitore menu
+        }
+        // Ridisegna la pagina principale
+        if (typeof renderCurrentPage === 'function') {
+          renderCurrentPage();
+        }
+      }
+    };
+    panel.addEventListener('transitionend', handleTransitionEnd);
   } else {
+    // APERTURA COME PRIMA
     panel.style.display = 'block';
+    panel.classList.remove('slide-out');
+    panel.classList.add('slide-in');
     panel.classList.add('active');
-    // Se il contenuto è vuoto o bianco, ripristina il menu iniziale
-    const container = document.getElementById('settings-page-content');
     if (container && (!container.innerHTML.trim() || container.innerHTML.trim() === '' || container.style.display === 'none')) {
       if (window.settingsMenuHtml) {
         container.innerHTML = window.settingsMenuHtml;

@@ -194,41 +194,59 @@ function handleSearch() {
     }
 }
 
-/**
- * Mostra/nasconde il pannello delle impostazioni
- */
-function toggleSettingsPanel(force) {
-    console.log('[DEBUG] toggleSettingsPanel called', force);
-    if (!AppConfig.dom.settingsPanel) {
-        console.error('[DEBUG] settingsPanel element not found!');
-        return;
-    }
-    // Rimuovi evidenziazione da tutti i menu
-    document.querySelectorAll('.settings-menu-item.active').forEach(el => el.classList.remove('active'));
-    if (force === true) {
-        AppConfig.dom.settingsPanel.classList.add('active');
-    } else if (force === false) {
-        AppConfig.dom.settingsPanel.classList.remove('active');
-        AppConfig.editingTile = null;
-        if (typeof renderCurrentPage === 'function') {
-            renderCurrentPage();
-        }
-    } else {
-        AppConfig.dom.settingsPanel.classList.toggle('active');
-        if (!AppConfig.dom.settingsPanel.classList.contains('active')) {
-            AppConfig.editingTile = null;
-            if (typeof renderCurrentPage === 'function') {
-                renderCurrentPage();
-            }
-        }
-    }
+// [REMOVED] Funzione duplicata toggleSettingsPanel
+// Gestione unificata tramite window.toggleSettingsPanel = function(open) {
+window.toggleSettingsPanel = function(open) {
+  // Chiudi sempre il pannello di modifica tile quando si apre quello impostazioni
+  const tileEditPanel = document.getElementById('tile-edit-panel');
+  if (tileEditPanel) {
+    tileEditPanel.classList.remove('active');
+  }
+  // Prosegui con la logica originale di apertura impostazioni
+  if (!AppConfig.dom.settingsPanel) {
+    console.error('[DEBUG] settingsPanel element not found!');
+    return;
+  }
+  if (open === true) {
+    AppConfig.dom.settingsPanel.classList.add('active');
+  } else if (open === false) {
+    AppConfig.dom.settingsPanel.classList.remove('active');
+  } else {
+    AppConfig.dom.settingsPanel.classList.toggle('active');
+  }
 }
+//     // Rimuovi evidenziazione da tutti i menu
+//     document.querySelectorAll('.settings-menu-item.active').forEach(el => el.classList.remove('active'));
+//     if (force === true) {
+//         AppConfig.dom.settingsPanel.classList.add('active');
+//     } else if (force === false) {
+//         AppConfig.dom.settingsPanel.classList.remove('active');
+//         AppConfig.editingTile = null;
+//         if (typeof renderCurrentPage === 'function') {
+//             renderCurrentPage();
+//         }
+//     } else {
+//         AppConfig.dom.settingsPanel.classList.toggle('active');
+//         if (!AppConfig.dom.settingsPanel.classList.contains('active')) {
+//             AppConfig.editingTile = null;
+//             if (typeof renderCurrentPage === 'function') {
+//                 renderCurrentPage();
+//             }
+//         }
+//     }
+// }
 
 
 /**
  * Mostra/nasconde il pannello di modifica tile
  */
 function openTileEditPanel(tile = null) {
+    // Chiudi pannello impostazioni
+    const settingsPanel = document.getElementById('settings-panel');
+    if (settingsPanel) settingsPanel.classList.remove('active');
+    // NON serve ridefinire settingsPanel e non serve più modificare style.display o togliere slide-in/slide-out qui.
+    // Prosegui con la logica originale di apertura edit tile
+
     // DEBUG: mostra quando viene chiamato e con quale tile
     console.log('--- DEBUG openTileEditPanel ---');
     console.log('tile passato:', tile);
