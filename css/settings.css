@@ -345,17 +345,6 @@
   display: none;
 } */
 
-/* Responsive */
-.settings-overlay {
-  position: fixed;
-  left: 0; top: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.13);
-  z-index: 999;
-  display: none;
-}
-.settings-overlay.active {
-  display: block;
-}
 
 @media (max-width: 700px) {
   .settings-panel {

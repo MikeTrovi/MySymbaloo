@@ -2,63 +2,71 @@
 
 /* Overlay e finestra modale centrale */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.55);
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.25s;
-  opacity: 0;
-  pointer-events: none;
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.55);
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.25s;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .modal.show {
-  display: flex;
-  opacity: 1;
-  pointer-events: auto;
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .modal .modal-content {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  padding: 32px 26px 24px 26px;
-  max-width: 350px;
-  min-width: 260px;
-  text-align: center;
-  animation: modal-in 0.28s cubic-bezier(.42,0,.58,1.0);
-  position: relative;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    padding: 32px 26px 24px 26px;
+    max-width: 350px;
+    min-width: 260px;
+    text-align: center;
+    animation: modal-in 0.28s cubic-bezier(.42, 0, .58, 1.0);
+    position: relative;
 }
 
 @keyframes modal-in {
-  0% { opacity: 0; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1); }
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .modal .close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  font-size: 1.5em;
-  color: #888;
-  cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-size: 1.5em;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
 }
+
 .modal .close:hover {
-  color: #e74c3c;
-  transform: rotate(90deg) scale(1.1);
+    color: #e74c3c;
+    transform: rotate(90deg) scale(1.1);
 }
 
 @media (max-width: 600px) {
-  .modal .modal-content {
-    max-width: 95vw;
-    padding: 18px 6vw 18px 6vw;
-  }
+    .modal .modal-content {
+        max-width: 95vw;
+        padding: 18px 6vw 18px 6vw;
+    }
 }
 
 /* Pannello di modifica tile */
@@ -67,7 +75,8 @@
     right: -350px;
     top: 105px;
     width: 330px;
-    bottom: 20px; /* Stesso bottom della sidebar */
+    bottom: 20px;
+    /* Stesso bottom della sidebar */
     /* height: calc(100% - 20px); */
     background-color: var(--window-color);
     opacity: var(--window-opacity);
@@ -85,7 +94,8 @@
 /* Header del pannello di modifica */
 .edit-header {
     display: flex;
-    justify-content: flex-start; /* Allinea gli elementi a sinistra */
+    justify-content: flex-start;
+    /* Allinea gli elementi a sinistra */
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -97,8 +107,10 @@
     font-size: 20px;
     font-weight: 600;
     margin: 0;
-    flex-grow: 1; /* Il titolo occupa tutto lo spazio disponibile */
-    text-align: left; /* Esplicitamente allineato a sinistra */
+    flex-grow: 1;
+    /* Il titolo occupa tutto lo spazio disponibile */
+    text-align: left;
+    /* Esplicitamente allineato a sinistra */
 }
 
 /* Contenuto del pannello di modifica */
@@ -113,18 +125,18 @@
 }
 
 #tile-dimension-square {
-  width: 72px !important;
-  height: 72px !important;
-  aspect-ratio: 1/1;
-  box-sizing: border-box;
-  background: #dedede;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2em;
-  font-weight: 500;
-  color: #111;
+    width: 72px !important;
+    height: 72px !important;
+    aspect-ratio: 1/1;
+    box-sizing: border-box;
+    background: #dedede;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #111;
 }
 
 /* Titolo del pannello nelle sezioni */
@@ -166,26 +178,26 @@
 
 /* Migliora l'aspetto dell'anteprima dell'icona */
 .icon-preview {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
     justify-content: center;
 }
 
 #icon-preview-container {
-    width: 90px;
-    height: 90px;
-    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
     background-color: #f5f5f5;
     border: 1px dashed #ddd;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #icon-preview-container img {
-    max-width: 70%;
-    max-height: 70%;
+    max-width: 80%;
+    max-height: 80%;
 }
 
 /* Sezione Preview */
@@ -345,393 +357,358 @@
     padding: 10px 0;
 }
 
-/* Controlli per ridimensionamento tile */
-.resize-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-}
-
 .resize-display {
     width: 80px;
     height: 80px;
-    background-color: #e0e0e0;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    color: #555;
-    font-size: 18px;
-    position: relative;
-}
-
-.resize-buttons-container {
-    display: flex;
-    gap: 20px;
-}
-
-.resize-buttons-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.resize-buttons-horizontal {
-    display: flex;
-    gap: 10px;
-}
-
-.resize-buttons button {
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    color: var(--primary-color);
-    font-size: 16px;
-    transition: all 0.2s ease;
-}
-
-.resize-buttons button:hover {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.icon-option {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.icon-option:hover {
-    transform: scale(1.1);
-    background-color: #e0e0e0;
-}
-
-.icon-option.selected {
-    border: 2px solid var(--primary-color);
-    background-color: rgba(52, 152, 219, 0.1);
-}
-
-.icon-option img {
-    max-width: 80%;
-    max-height: 80%;
-}
-
-/* Area anteprima icona */
-.icon-preview {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-}
-
-#icon-preview-container {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-#icon-preview-container img {
-    max-width: 80%;
-    max-height: 80%;
-}
-
-/* Selettore di dimensione */
-.size-selector {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-}
-
-/* Nuovi controlli di ridimensionamento */
-.resize-controls {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-}
-
-.resize-display {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
     padding: 5px 15px;
     background-color: white;
     border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    color: #333;
+    font-size: 24px;
+    position: relative;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.resize-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.resize-button {
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    background-color: white;
-    border: 1px solid #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.resize-button:hover {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-}
-
-/* Bottoni circolari per dimensione tile */
-.dim-circle-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1.5px solid #bbb;
-  background: #fff;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  box-shadow: none;
-  transition: border 0.18s, background 0.18s, color 0.18s;
-  outline: none;
-  margin: 0;
-  padding: 0;
-}
-.dim-circle-btn:active, .dim-circle-btn:focus {
-  border-color: #1976d2;
-  color: #1976d2;
-}
-.dim-circle-btn:hover {
-  border-color: #1976d2;
-  background: #e3f0fb;
-  color: #1976d2;
-}
-
-/* Stile anteprima tile */
-.preview-section {
-    padding: 15px;
-}
-
-.preview-label {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    text-align: center;
-    color: #555;
-}
-
-.tile-preview {
-    display: flex;
-    justify-content: center;
-    padding: 15px 0;
-}
-
-.preview-display {
-    width: 50px;
-    height: 50px;
-    background-color: var(--primary-color);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.size-selector div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.size-selector input[type="number"] {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 8px;
-    text-align: center;
-    background-color: white;
-}
-
-.size-selector label {
-    margin-bottom: 0 !important;
-    font-weight: 500;
-    font-size: 14px;
-    color: #666;
-}
-
-/* Bottoni azione */
-.edit-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-top: auto;
-    margin-bottom: 10px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(0,0,0,0.05);
-}
-
-.edit-actions button {
-    flex: 1;
-    padding: 12px;
-    border-radius: 30px;
-    font-weight: 600;
-    font-size: 13px;
-    margin: 0;
-    transition: all 0.2s ease;
-    border: none;
-    cursor: pointer;
-}
-
-.primary-button {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.primary-button:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-.secondary-button {
-    background-color: #f0f0f0;
-    color: #555;
-}
-
-.secondary-button:hover {
-    background-color: #e0e0e0;
-}
-
-.edit-actions .danger-button {
-    background-color: #ff3366;
-    color: white;
-}
-
-.edit-actions .save-button {
-background-color: var(--primary-color);
-color: white;
-border: none;
-}
-
-.edit-actions .cancel-button {
-background-color: #f0f0f0;
-color: #555;
-border: none;
-}
-
-/* Overlay per gruppi di tile */
-.group-overlay {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
-display: none;
-justify-content: center;
-align-items: center;
-z-index: 300;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 300;
-}
-
-.group-popup {
-    width: 80%;
-    max-width: 700px;
-    max-height: 80vh;
-    background-color: var(--window-color);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-}
-
-.group-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-}
-
-.group-header h3 {
-    color: var(--primary-color);
-    font-size: 18px;
-}
-
-.group-tiles-container {
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    grid-gap: 15px;
-    overflow-y: auto;
-    max-height: 60vh;
-}
-
-.group-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    justify-content: flex-end;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .tile-edit-panel {
-        width: 90%;
-        max-width: 350px;
+    .resize-buttons-container {
+        display: flex;
+        gap: 20px;
     }
-    
-    .group-popup {
-        width: 95%;
-        max-height: 90vh;
-    }
-    
-    .group-tiles-container {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    }
-    
-    .icon-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .size-selector {
+
+    .resize-buttons-vertical {
+        display: flex;
         flex-direction: column;
         gap: 10px;
     }
-}
+
+    .resize-buttons-horizontal {
+        display: flex;
+        gap: 10px;
+    }
+
+    .resize-buttons button {
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: var(--primary-color);
+        font-size: 16px;
+        transition: all 0.2s ease;
+    }
+
+    .resize-buttons button:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .icon-option {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .icon-option:hover {
+        transform: scale(1.1);
+        background-color: #e0e0e0;
+    }
+
+    .icon-option.selected {
+        border: 2px solid var(--primary-color);
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    .icon-option img {
+        max-width: 80%;
+        max-height: 80%;
+    }
+
+    /* Selettore di dimensione */
+    .size-selector {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        padding: 15px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+    }
+
+    /* Nuovi controlli di ridimensionamento */
+    .resize-controls {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+
+    .resize-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .resize-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        background-color: white;
+        border: 1px solid #ddd;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .resize-button:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    /* Bottoni circolari per dimensione tile */
+    .dim-circle-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1.5px solid #bbb;
+        background: #fff;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: none;
+        transition: border 0.18s, background 0.18s, color 0.18s;
+        outline: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dim-circle-btn:active,
+    .dim-circle-btn:focus {
+        border-color: #1976d2;
+        color: #1976d2;
+    }
+
+    .dim-circle-btn:hover {
+        border-color: #1976d2;
+        background: #e3f0fb;
+        color: #1976d2;
+    }
+
+    /* Stile anteprima tile */
+    .preview-section {
+        padding: 15px;
+    }
+
+    .preview-label {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-align: center;
+        color: #555;
+    }
+
+    .tile-preview {
+        display: flex;
+        justify-content: center;
+        padding: 15px 0;
+    }
+
+    .preview-display {
+        width: 50px;
+        height: 50px;
+        background-color: var(--primary-color);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .size-selector div {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .size-selector input[type="number"] {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 8px;
+        text-align: center;
+        background-color: white;
+    }
+
+    .size-selector label {
+        margin-bottom: 0 !important;
+        font-weight: 500;
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* Bottoni azione */
+    .edit-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: auto;
+        margin-bottom: 10px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .edit-actions button {
+        flex: 1;
+        padding: 12px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 13px;
+        margin: 0;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .primary-button {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .primary-button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .secondary-button {
+        background-color: #f0f0f0;
+        color: #555;
+    }
+
+    .secondary-button:hover {
+        background-color: #e0e0e0;
+    }
+
+    .edit-actions .danger-button {
+        background-color: #ff3366;
+        color: white;
+    }
+
+    .edit-actions .save-button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+    }
+
+    .edit-actions .cancel-button {
+        background-color: #f0f0f0;
+        color: #555;
+        border: none;
+    }
+
+    /* Overlay per gruppi di tile */
+    .group-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 300;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 300;
+    }
+
+    .group-popup {
+        width: 80%;
+        max-width: 700px;
+        max-height: 80vh;
+        background-color: var(--window-color);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .group-header h3 {
+        color: var(--primary-color);
+        font-size: 18px;
+    }
+
+    .group-tiles-container {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-gap: 15px;
+        overflow-y: auto;
+        max-height: 60vh;
+    }
+
+    .group-footer {
+        padding: 15px 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .tile-edit-panel {
+            width: 90%;
+            max-width: 350px;
+        }
+
+        .group-popup {
+            width: 95%;
+            max-height: 90vh;
+        }
+
+        .group-tiles-container {
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        }
+
+        .icon-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .size-selector {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }

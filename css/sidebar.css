@@ -18,31 +18,22 @@
 }
 
 .sidebar-logo {
-    width: 65px;
-    height: 65px;
+    width: 48px;
+    height: 48px;
+    margin-top: 20px;
     position: absolute;
-    top: 0px;
+    margin-left: 0;
+    margin-right: 0;
+    top: 20px;
     left: 0px;
     margin: 0;
     display: block;
     z-index: 100;
     background: transparent;
+    align-self: flex-start;
     /* Puoi aggiungere un bordo o ombra se vuoi risalto */
 }
 
-.sidebar-logo {
-    width: 48px;
-    height: 48px;
-    margin-top: 20px;
-    margin-left: 0;
-    margin-right: 0;
-    display: block;
-    align-self: flex-start;
-}
-
-.sidebar {
-    margin-top: 0;
-}
 
 
 .sidebar {
@@ -51,6 +42,7 @@
     top: 105px;      /* 65px header + 20px spazio */
     bottom: 20px;   /* 20px dal fondo */
     width: 65px;
+    margin-top: 0;
     min-width: 65px;
     background-color: var(--window-color);
     opacity: var(--window-opacity);
@@ -96,17 +88,11 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.7);
-    border: 1.5px solid #e0e6ef;
     margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,32,128,0.07);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.3em;
-    color: #2a3b5b;
-    transition: box-shadow 0.2s, border 0.2s, background 0.2s;
-    align-items: center;
     background-color: #f2f2f2;
     color: #555;
     font-size: 18px;

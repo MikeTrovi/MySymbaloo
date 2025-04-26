@@ -24,7 +24,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0;
+    gap: 25px;
     box-sizing: border-box;
     padding: 0 8px 0 0;
     overflow: hidden;
@@ -38,14 +38,6 @@ header {
     min-width: 0;
 }
 
-/* Stile per il titolo dell'applicazione */
-.opaque-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 25px;
-    width: 100%;
-}
 
 .app-title {
     font-weight: 700;
@@ -83,7 +75,7 @@ header {
 .search-container {
     display: flex;
     align-items: center;
-    width: 240px;
+    width: 350px;
     min-width: 60px;
     max-width: 320px;
     flex-grow: 1;
@@ -164,11 +156,7 @@ header {
 }
 
 /* Container per la barra di ricerca */
-.search-container {
-    display: flex;
-    width: 350px;
-    position: relative;
-}
+
 
 /* Stile per l'input di ricerca */
 #search-input {
